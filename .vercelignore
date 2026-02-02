@@ -1,0 +1,112 @@
+# ===================================
+# Version Control
+# ===================================
+.git/
+.gitignore
+.gitattributes
+
+# ===================================
+# Dependencies (already handled by Vercel)
+# ===================================
+node_modules/
+
+# ===================================
+# Documentation (optional - 배포에 불필요)
+# ===================================
+docs/
+README.md
+CHANGELOG.md
+CONTRIBUTING.md
+LICENSE
+
+# ===================================
+# Development Tools
+# ===================================
+.vscode/
+.idea/
+.editorconfig
+.prettierrc
+.prettierignore
+.eslintrc*
+eslint.config.*
+
+# ===================================
+# Testing
+# ===================================
+tests/
+test/
+__tests__/
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+coverage/
+.nyc_output/
+
+# ===================================
+# Claude Code (개발 도구)
+# ===================================
+.claude/
+CLAUDE.md
+
+# ===================================
+# Serena (개발 도구)
+# ===================================
+.serena/
+
+# ===================================
+# Task Master AI (개발 도구)
+# ===================================
+.taskmaster/
+
+# ===================================
+# MCP Config (개발 환경)
+# ===================================
+.mcp.json
+
+# ===================================
+# Environment files (보안)
+# ===================================
+.env
+.env.local
+.env.*.local
+.env.development
+.env.test
+
+# Keep production env (Vercel handles this)
+!.env.production
+
+# ===================================
+# Build artifacts (Next.js만 필요)
+# ===================================
+.next/
+out/
+
+# ===================================
+# Python development
+# ===================================
+__pycache__/
+*.pyc
+.pytest_cache/
+venv/
+.venv/
+
+# ===================================
+# Logs
+# ===================================
+*.log
+logs/
+
+# ===================================
+# OS files
+# ===================================
+.DS_Store
+Thumbs.db
+
+# ===================================
+# Temporary files
+# ===================================
+*.tmp
+*.temp
+tmp/
+temp/
