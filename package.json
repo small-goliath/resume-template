@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "concurrently \"next dev --turbopack\" \"npm run api:dev\" --names \"next,api\" --prefix-colors \"cyan,yellow\"",
+    "api:dev": "cd api && source venv/bin/activate && uvicorn index:app --reload --port 8000",
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint .",
@@ -48,6 +49,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "concurrently": "^9.2.1",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "eslint-config-prettier": "^10.1.8",
