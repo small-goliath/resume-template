@@ -19,6 +19,11 @@ export default async function AdminLayout({
   const adminToken = cookieStore.get('admin_token')?.value
   const expectedToken = process.env.ADMIN_SECRET_TOKEN
 
+  // 디버깅: 환경변수 존재 여부 확인 (프로덕션에서 제거 예정)
+  console.log('[DEBUG] Admin Token exists:', !!adminToken)
+  console.log('[DEBUG] Expected Token exists:', !!expectedToken)
+  console.log('[DEBUG] Tokens match:', adminToken === expectedToken)
+
   // 토큰 검증
   if (!adminToken || adminToken !== expectedToken) {
     redirect('/login')
