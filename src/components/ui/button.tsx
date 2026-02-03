@@ -11,25 +11,31 @@ const buttonVariants = cva(
       variant: {
         default: 'bg-primary text-primary-foreground hover:bg-primary/90',
         destructive:
-          'bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',
+          'bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20',
         outline:
-          'border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50',
+          'border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground',
         secondary:
           'bg-secondary text-secondary-foreground hover:bg-secondary/80',
         ghost:
-          'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
+          'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
-        // 새로운 gradient variant - 모던하고 획기적인 그라디언트 효과
-        gradient:
-          'bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/50 hover:shadow-xl hover:shadow-purple-500/60 hover:scale-[1.02] active:scale-[0.98] dark:from-blue-500 dark:via-purple-500 dark:to-pink-500',
-        // glass variant - glassmorphism 효과로 세련된 느낌
-        glass:
-          'bg-white/10 backdrop-blur-md border border-white/20 text-foreground shadow-lg hover:bg-white/20 dark:bg-black/20 dark:border-white/10 dark:hover:bg-black/30',
-        // neon variant - 개발자스러운 네온 효과
-        neon: 'bg-transparent border-2 border-cyan-500 text-cyan-500 shadow-[0_0_10px_rgba(6,182,212,0.5)] hover:bg-cyan-500 hover:text-white hover:shadow-[0_0_20px_rgba(6,182,212,0.8)] dark:border-cyan-400 dark:text-cyan-400 dark:hover:border-cyan-300 dark:hover:text-black dark:hover:bg-cyan-400',
-        // sleek variant - 미니멀하고 클린한 디자인
-        sleek:
-          'bg-zinc-900 text-zinc-100 hover:bg-zinc-800 border border-zinc-800 shadow-sm hover:shadow-md dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 dark:border-zinc-200',
+        // 사이버펑크 네온 variants
+        neon: 'bg-transparent border-2 border-[--color-neon-cyan-500] text-[--color-neon-cyan-500] shadow-[0_0_10px_var(--color-neon-cyan-500)] hover:bg-[--color-neon-cyan-500] hover:text-[--color-black-base] hover:shadow-[0_0_20px_var(--color-neon-cyan-500),0_0_40px_var(--color-neon-cyan-500)] transition-all duration-300',
+        'neon-magenta':
+          'bg-transparent border-2 border-[--color-neon-magenta-500] text-[--color-neon-magenta-500] shadow-[0_0_10px_var(--color-neon-magenta-500)] hover:bg-[--color-neon-magenta-500] hover:text-[--color-black-base] hover:shadow-[0_0_20px_var(--color-neon-magenta-500),0_0_40px_var(--color-neon-magenta-500)] transition-all duration-300',
+        'neon-purple':
+          'bg-transparent border-2 border-[--color-neon-purple-500] text-[--color-neon-purple-500] shadow-[0_0_10px_var(--color-neon-purple-500)] hover:bg-[--color-neon-purple-500] hover:text-[--color-black-base] hover:shadow-[0_0_20px_var(--color-neon-purple-500),0_0_40px_var(--color-neon-purple-500)] transition-all duration-300',
+        'neon-green':
+          'bg-transparent border-2 border-[--color-neon-green-500] text-[--color-neon-green-500] shadow-[0_0_10px_var(--color-neon-green-500)] hover:bg-[--color-neon-green-500] hover:text-[--color-black-base] hover:shadow-[0_0_20px_var(--color-neon-green-500),0_0_40px_var(--color-neon-green-500)] transition-all duration-300',
+        // neon filled variants
+        'neon-filled':
+          'bg-[--color-neon-cyan-500] text-[--color-black-base] shadow-[0_0_20px_var(--color-neon-cyan-500)] hover:shadow-[0_0_30px_var(--color-neon-cyan-500),0_0_60px_var(--color-neon-cyan-500)] hover:brightness-110 transition-all duration-300',
+        // neon ghost variant
+        'neon-ghost':
+          'bg-transparent text-[--color-neon-cyan-500] hover:bg-[--color-neon-cyan-500]/10 hover:text-[--color-neon-cyan-400] hover:shadow-[0_0_15px_var(--color-neon-cyan-500)] transition-all duration-300',
+        // terminal variant
+        terminal:
+          'bg-[--color-black-elevated] border border-[--color-neon-green-700] text-[--color-neon-green-500] font-mono hover:border-[--color-neon-green-500] hover:shadow-[0_0_10px_var(--color-neon-green-500)] transition-all duration-300',
       },
       size: {
         default: 'h-9 px-4 py-2 has-[>svg]:px-3',

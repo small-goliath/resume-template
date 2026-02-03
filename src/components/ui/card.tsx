@@ -9,25 +9,33 @@ const cardVariants = cva(
   {
     variants: {
       variant: {
-        // default - 기본 카드 스타일
-        default: 'py-6',
-        // elevated - 입체감 있는 카드
-        elevated:
-          'py-6 shadow-md hover:shadow-lg border-transparent bg-gradient-to-br from-card to-card/80 dark:from-card dark:to-card/50',
-        // glass - glassmorphism 효과
+        // default - 기본 사이버펑크 스타일
+        default:
+          'py-6 bg-[--color-black-elevated] border-[--color-neon-cyan-900] shadow-[0_0_10px_rgba(0,240,255,0.1)]',
+        // cyber - 강한 네온 보더
+        cyber:
+          'py-6 bg-[--color-black-elevated] border-2 border-[--color-neon-cyan-500] shadow-[0_0_20px_rgba(0,240,255,0.3)] hover:shadow-[0_0_30px_rgba(0,240,255,0.5)] transition-all duration-300',
+        // neon-border - 네온 보더 효과
+        'neon-border':
+          'py-6 bg-[--color-black-elevated] border border-[--color-neon-cyan-700] shadow-[0_0_15px_rgba(0,240,255,0.2),inset_0_0_15px_rgba(0,240,255,0.05)] hover:border-[--color-neon-cyan-500] hover:shadow-[0_0_25px_rgba(0,240,255,0.4),inset_0_0_25px_rgba(0,240,255,0.1)] transition-all duration-300',
+        // terminal - 터미널 스타일
+        terminal:
+          'py-6 bg-[--color-black-surface] border border-[--color-neon-green-800] text-[--color-neon-green-500] font-mono shadow-[0_0_10px_rgba(0,255,65,0.1)]',
+        // glass - 사이버펑크 글래스
         glass:
-          'py-6 bg-white/50 backdrop-blur-xl border-white/20 shadow-xl dark:bg-black/30 dark:border-white/10',
-        // outline - 아웃라인 강조 카드
-        outline:
-          'py-6 border-2 hover:border-primary/50 hover:shadow-md dark:hover:border-primary/30',
-        // minimal - 미니멀 디자인
+          'py-6 bg-[--color-black-elevated]/50 backdrop-blur-xl border border-[--color-neon-cyan-900]/50 shadow-[0_0_20px_rgba(0,240,255,0.15)]',
+        // magenta - 마젠타 네온
+        magenta:
+          'py-6 bg-[--color-black-elevated] border border-[--color-neon-magenta-700] shadow-[0_0_15px_rgba(255,0,255,0.2)] hover:shadow-[0_0_25px_rgba(255,0,255,0.4)] transition-all duration-300',
+        // purple - 퍼플 네온
+        purple:
+          'py-6 bg-[--color-black-elevated] border border-[--color-neon-purple-700] shadow-[0_0_15px_rgba(157,0,255,0.2)] hover:shadow-[0_0_25px_rgba(157,0,255,0.4)] transition-all duration-300',
+        // minimal - 미니멀 사이버펑크
         minimal:
-          'py-6 border-0 shadow-none hover:bg-accent/50 dark:hover:bg-accent/20',
-        // neon - 네온 효과 카드 (개발자스러운)
-        neon: 'py-6 border-cyan-500/50 shadow-[0_0_15px_rgba(6,182,212,0.3)] hover:shadow-[0_0_25px_rgba(6,182,212,0.5)] dark:border-cyan-400/50',
+          'py-6 bg-[--color-black-surface] border-0 shadow-none hover:bg-[--color-black-elevated] transition-colors duration-300',
         // interactive - 인터랙티브 효과
         interactive:
-          'py-6 cursor-pointer hover:scale-[1.02] hover:shadow-lg active:scale-[0.98] transition-transform',
+          'py-6 bg-[--color-black-elevated] border border-[--color-neon-cyan-800] cursor-pointer hover:scale-[1.02] hover:border-[--color-neon-cyan-600] hover:shadow-[0_0_25px_rgba(0,240,255,0.3)] active:scale-[0.98] transition-all duration-300',
       },
     },
     defaultVariants: {

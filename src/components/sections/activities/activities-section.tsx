@@ -110,7 +110,7 @@ interface ActivityCardProps {
 function ActivityCard({ activity }: ActivityCardProps) {
   return (
     <Card
-      variant="outline"
+      variant="neon-border"
       className="transition-all duration-300 hover:border-green-500/30 hover:shadow-lg hover:shadow-green-500/5 dark:hover:border-green-400/30"
     >
       <CardHeader className="space-y-3">

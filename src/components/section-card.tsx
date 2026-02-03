@@ -27,7 +27,16 @@ interface SectionCardProps {
   // 컨텐츠 className
   contentClassName?: string
   // 카드 variant
-  variant?: 'default' | 'elevated' | 'glass' | 'outline' | 'minimal' | 'neon'
+  variant?:
+    | 'default'
+    | 'cyber'
+    | 'neon-border'
+    | 'terminal'
+    | 'glass'
+    | 'magenta'
+    | 'purple'
+    | 'minimal'
+    | 'interactive'
   // 아이콘 색상 (Tailwind 클래스)
   iconColor?: string
   // 아이콘 배경 활성화
@@ -43,7 +52,7 @@ export function SectionCard({
   className,
   headerClassName,
   contentClassName,
-  variant = 'elevated',
+  variant = 'cyber',
   iconColor = 'text-primary',
   iconBackground = true,
 }: SectionCardProps) {

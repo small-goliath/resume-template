@@ -125,7 +125,7 @@ function InternshipCard({ internship }: InternshipCardProps) {
 
   return (
     <Card
-      variant="outline"
+      variant="neon-border"
       className="transition-all duration-300 hover:border-indigo-500/30 hover:shadow-lg hover:shadow-indigo-500/5 dark:hover:border-indigo-400/30"
     >
       <CardHeader className="space-y-3">

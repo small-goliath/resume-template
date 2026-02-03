@@ -25,7 +25,7 @@ export default function ComponentsDemoPage() {
         <h2 className="text-3xl font-bold">Button Variants</h2>
 
         {/* 기본 variants */}
-        <Card variant="elevated">
+        <Card variant="cyber">
           <CardHeader>
             <CardTitle>기본 Variants</CardTitle>
           </CardHeader>
@@ -44,50 +44,50 @@ export default function ComponentsDemoPage() {
         {/* 새로운 커스텀 variants */}
         <Card variant="glass">
           <CardHeader>
-            <CardTitle>커스텀 Variants</CardTitle>
+            <CardTitle>네온 Variants</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex flex-wrap gap-4">
-              <Button variant="gradient" size="lg">
-                <Sparkles className="mr-2 size-4" />
-                Gradient
-              </Button>
-              <Button variant="glass" size="lg">
-                <Code2 className="mr-2 size-4" />
-                Glass
-              </Button>
               <Button variant="neon" size="lg">
-                <Zap className="mr-2 size-4" />
-                Neon
+                <Sparkles className="mr-2 size-4" />
+                Neon Cyan
               </Button>
-              <Button variant="sleek" size="lg">
+              <Button variant="neon-magenta" size="lg">
+                <Code2 className="mr-2 size-4" />
+                Neon Magenta
+              </Button>
+              <Button variant="neon-purple" size="lg">
+                <Zap className="mr-2 size-4" />
+                Neon Purple
+              </Button>
+              <Button variant="neon-green" size="lg">
                 <Rocket className="mr-2 size-4" />
-                Sleek
+                Neon Green
               </Button>
             </div>
           </CardContent>
         </Card>
 
         {/* 버튼 사이즈 */}
-        <Card variant="outline">
+        <Card variant="neon-border">
           <CardHeader>
             <CardTitle>Button Sizes</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex flex-wrap items-center gap-4">
-              <Button variant="gradient" size="xs">
+              <Button variant="neon-filled" size="xs">
                 Extra Small
               </Button>
-              <Button variant="gradient" size="sm">
+              <Button variant="neon-filled" size="sm">
                 Small
               </Button>
-              <Button variant="gradient" size="default">
+              <Button variant="neon-filled" size="default">
                 Default
               </Button>
-              <Button variant="gradient" size="lg">
+              <Button variant="neon-filled" size="lg">
                 Large
               </Button>
-              <Button variant="gradient" size="xl">
+              <Button variant="neon-filled" size="xl">
                 Extra Large
               </Button>
             </div>
@@ -111,13 +111,13 @@ export default function ComponentsDemoPage() {
             </CardContent>
           </Card>
 
-          <Card variant="elevated">
+          <Card variant="cyber">
             <CardHeader>
-              <CardTitle>Elevated Card</CardTitle>
+              <CardTitle>Cyber Card</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground text-sm">
-                입체감 있는 그라디언트 카드입니다.
+                강한 네온 보더 카드입니다.
               </p>
             </CardContent>
           </Card>
@@ -133,13 +133,13 @@ export default function ComponentsDemoPage() {
             </CardContent>
           </Card>
 
-          <Card variant="outline">
+          <Card variant="neon-border">
             <CardHeader>
-              <CardTitle>Outline Card</CardTitle>
+              <CardTitle>Neon Border Card</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground text-sm">
-                아웃라인 강조 카드입니다.
+                네온 보더 효과 카드입니다.
               </p>
             </CardContent>
           </Card>
@@ -155,13 +155,13 @@ export default function ComponentsDemoPage() {
             </CardContent>
           </Card>
 
-          <Card variant="neon">
+          <Card variant="terminal">
             <CardHeader>
-              <CardTitle>Neon Card</CardTitle>
+              <CardTitle>Terminal Card</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground text-sm">
-                네온 효과의 개발자스러운 카드입니다.
+                터미널 스타일 카드입니다.
               </p>
             </CardContent>
           </Card>
@@ -177,7 +177,7 @@ export default function ComponentsDemoPage() {
           icon={Code2}
           title="개발 경험"
           description="프론트엔드 및 백엔드 개발 경력"
-          variant="elevated"
+          variant="cyber"
         >
           <div className="space-y-4">
             <SectionCard.Item
@@ -235,7 +235,7 @@ export default function ComponentsDemoPage() {
           icon={Zap}
           title="기술 스택"
           description="주로 사용하는 기술과 도구"
-          variant="neon"
+          variant="neon-border"
           iconColor="text-cyan-500"
           iconBackground={false}
         >
@@ -263,7 +263,7 @@ export default function ComponentsDemoPage() {
       <section className="space-y-6">
         <h2 className="text-3xl font-bold">조합 예제</h2>
 
-        <Card variant="elevated">
+        <Card variant="cyber">
           <CardHeader>
             <CardTitle>인터랙티브 섹션</CardTitle>
           </CardHeader>
@@ -274,7 +274,7 @@ export default function ComponentsDemoPage() {
               </p>
 
               <div className="flex flex-wrap gap-3">
-                <Button variant="gradient" onClick={() => {}}>
+                <Button variant="neon-filled" onClick={() => {}}>
                   {/* TODO: 클릭 이벤트 구현 */}
                   <Sparkles className="mr-2" />
                   시작하기
@@ -284,7 +284,7 @@ export default function ComponentsDemoPage() {
                   <Code2 className="mr-2" />
                   코드 보기
                 </Button>
-                <Button variant="glass" onClick={() => {}}>
+                <Button variant="terminal" onClick={() => {}}>
                   {/* TODO: 클릭 이벤트 구현 */}
                   <Rocket className="mr-2" />
                   배포하기

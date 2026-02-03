@@ -144,7 +144,7 @@ interface ImageCardProps {
 function ImageCard({ review, onClick }: ImageCardProps) {
   return (
     <Card
-      variant="outline"
+      variant="neon-border"
       className="group relative cursor-pointer overflow-hidden transition-all duration-300 hover:border-purple-500/30 hover:shadow-lg hover:shadow-purple-500/10 dark:hover:border-pink-500/30"
       onClick={onClick}
     >

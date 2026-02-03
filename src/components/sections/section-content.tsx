@@ -10,7 +10,16 @@ interface SectionContentProps {
   description?: string
   children: React.ReactNode
   className?: string
-  variant?: 'default' | 'elevated' | 'glass' | 'outline' | 'minimal' | 'neon'
+  variant?:
+    | 'default'
+    | 'cyber'
+    | 'neon-border'
+    | 'terminal'
+    | 'glass'
+    | 'magenta'
+    | 'purple'
+    | 'minimal'
+    | 'interactive'
   hideCard?: boolean // Card 없이 컨텐츠만 표시
 }
 
@@ -106,7 +115,7 @@ export function ErrorSectionContent({
   error,
 }: Pick<SectionContentProps, 'value' | 'title'> & { error: string }) {
   return (
-    <SectionContent value={value} title={title} variant="outline">
+    <SectionContent value={value} title={title} variant="neon-border">
       <div className="flex min-h-[24rem] items-center justify-center">
         <div className="flex max-w-md flex-col items-center gap-4 text-center">
           {/* 에러 아이콘 */}

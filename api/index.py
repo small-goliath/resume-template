@@ -11,6 +11,14 @@ from datetime import datetime
 import traceback
 import os
 from typing import Optional
+from dotenv import load_dotenv
+from pathlib import Path
+
+# Load environment variables from .env.local (for local development)
+# Vercel will use environment variables from dashboard
+env_path = Path(__file__).resolve().parent.parent / ".env.local"
+if env_path.exists():
+    load_dotenv(dotenv_path=env_path)
 
 # Import Supabase directly to avoid relative import issues in Vercel
 try:

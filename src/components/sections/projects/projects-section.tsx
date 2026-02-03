@@ -118,7 +118,7 @@ function ProjectCard({ project }: ProjectCardProps) {
 
   return (
     <Card
-      variant="outline"
+      variant="neon-border"
       className="group flex h-full flex-col transition-all duration-300 hover:border-purple-500/30 hover:shadow-lg hover:shadow-purple-500/5 dark:hover:border-purple-400/30"
     >
       <CardHeader className="space-y-3">
@@ -150,7 +150,7 @@ function ProjectCard({ project }: ProjectCardProps) {
       {project.project_url && (
         <CardFooter>
           <Button
-            variant="outline"
+            variant="neon-ghost"
             size="sm"
             className="w-full gap-2 transition-all duration-300 group-hover:border-purple-500/50 group-hover:bg-purple-500/5"
             onClick={() => {

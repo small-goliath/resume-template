@@ -140,7 +140,7 @@ function TimelineItem({ item, isLast }: TimelineItemProps) {
 
         {/* 카드 */}
         <Card
-          variant="outline"
+          variant="neon-border"
           className="transition-all duration-300 hover:border-blue-500/30 hover:shadow-lg hover:shadow-blue-500/5 dark:hover:border-cyan-500/30"
         >
           <CardHeader>

@@ -70,12 +70,15 @@ function ProfileSectionContent({
 
   return (
     <section
-      className={`border-border/50 from-background via-background to-accent/5 relative overflow-hidden rounded-2xl border bg-gradient-to-br p-8 shadow-lg backdrop-blur-sm transition-all hover:shadow-xl md:p-12 ${className || ''}`}
+      className={`relative overflow-hidden rounded-lg border border-[--color-neon-cyan-700] bg-[--color-black-elevated] p-8 shadow-[0_0_30px_rgba(0,240,255,0.2)] backdrop-blur-sm transition-all hover:border-[--color-neon-cyan-500] hover:shadow-[0_0_50px_rgba(0,240,255,0.3)] md:p-12 ${className || ''}`}
     >
-      {/* 배경 장식 효과 (개발자스러운 그리드 패턴) */}
-      <div className="pointer-events-none absolute inset-0 opacity-[0.03]">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
+      {/* 사이버펑크 그리드 배경 */}
+      <div className="pointer-events-none absolute inset-0 opacity-[0.05]">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,240,255,0.5)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,240,255,0.5)_1px,transparent_1px)] bg-[size:40px_40px]" />
       </div>
+
+      {/* 네온 글로우 테두리 효과 */}
+      <div className="absolute -inset-px rounded-lg bg-[--color-neon-cyan-500] opacity-20 blur-xl" />
 
       {/* 컨텐츠 영역 */}
       <div className="relative z-10">
@@ -84,18 +87,18 @@ function ProfileSectionContent({
           {/* 프로필 이미지 영역 */}
           <div className="shrink-0">
             <div className="relative">
-              {/* 이미지 주변 빛나는 효과 (개발자스러운 감성) */}
-              <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-20 blur-xl" />
+              {/* 네온 글로우 효과 */}
+              <div className="absolute -inset-2 rounded-full bg-[--color-neon-cyan-500] opacity-30 blur-2xl" />
 
               <Avatar
                 size="lg"
-                className="border-border/50 ring-background/50 relative size-24 border-2 shadow-xl ring-4 md:size-32"
+                className="relative size-24 border-2 border-[--color-neon-cyan-500] shadow-[0_0_20px_var(--color-neon-cyan-500)] ring-4 ring-[--color-neon-cyan-500]/20 md:size-32"
               >
                 <AvatarImage
                   src={profile.profile_image_url || undefined}
                   alt={profile.name}
                 />
-                <AvatarFallback className="text-foreground bg-gradient-to-br from-blue-500/20 to-purple-500/20 text-2xl font-bold md:text-3xl">
+                <AvatarFallback className="bg-[--color-black-surface] text-[--color-neon-cyan-500] text-2xl font-bold md:text-3xl">
                   {initials}
                 </AvatarFallback>
               </Avatar>
@@ -107,14 +110,14 @@ function ProfileSectionContent({
             {/* 이름 및 MBTI */}
             <div className="flex flex-col items-center gap-3 md:items-start">
               <div className="flex flex-wrap items-center justify-center gap-3 md:justify-start">
-                <h1 className="text-foreground text-center text-3xl font-bold tracking-tight md:text-left md:text-4xl lg:text-5xl">
+                <h1 className="terminal-prompt text-center text-3xl font-bold tracking-tight text-[--color-neon-cyan-500] text-glow-medium md:text-left md:text-4xl lg:text-5xl">
                   {profile.name}
                 </h1>
 
                 {profile.mbti && (
                   <Badge
                     variant="secondary"
-                    className="flex items-center gap-1.5 bg-gradient-to-r from-blue-500/10 to-purple-500/10 px-3 py-1 text-sm font-semibold backdrop-blur-sm dark:from-blue-500/20 dark:to-purple-500/20"
+                    className="flex items-center gap-1.5 border border-[--color-neon-cyan-600] bg-[--color-neon-cyan-500]/10 px-3 py-1 text-sm font-semibold text-[--color-neon-cyan-500] shadow-[0_0_10px_var(--color-neon-cyan-500)]"
                   >
                     <Sparkles className="size-3.5" />
                     {profile.mbti}
@@ -122,8 +125,8 @@ function ProfileSectionContent({
                 )}
               </div>
 
-              {/* 구분선 (선택적) */}
-              <div className="h-1 w-16 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-60" />
+              {/* 네온 구분선 */}
+              <div className="h-0.5 w-20 rounded-full bg-[--color-neon-cyan-500] shadow-[0_0_10px_var(--color-neon-cyan-500)]" />
             </div>
 
             {/* 외부 링크 버튼 영역 */}
@@ -131,10 +134,9 @@ function ProfileSectionContent({
               {/* Github 버튼 */}
               {profile.github_url && (
                 <Button
-                  variant="outline"
+                  variant="neon"
                   size="default"
                   asChild
-                  className="group relative overflow-hidden transition-all hover:border-blue-500/50 hover:shadow-lg hover:shadow-blue-500/20 dark:hover:bg-blue-500/10"
                 >
                   <a
                     href={profile.github_url}
@@ -142,7 +144,7 @@ function ProfileSectionContent({
                     rel="noopener noreferrer"
                     className="flex items-center gap-2"
                   >
-                    <Github className="size-4 transition-transform group-hover:scale-110" />
+                    <Github className="size-4" />
                     <span>Github</span>
                   </a>
                 </Button>
@@ -151,10 +153,9 @@ function ProfileSectionContent({
               {/* 블로그 버튼 */}
               {profile.blog_url && (
                 <Button
-                  variant="outline"
+                  variant="neon"
                   size="default"
                   asChild
-                  className="group relative overflow-hidden transition-all hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/20 dark:hover:bg-purple-500/10"
                 >
                   <a
                     href={profile.blog_url}
@@ -162,7 +163,7 @@ function ProfileSectionContent({
                     rel="noopener noreferrer"
                     className="flex items-center gap-2"
                   >
-                    <BookOpen className="size-4 transition-transform group-hover:scale-110" />
+                    <BookOpen className="size-4" />
                     <span>블로그</span>
                   </a>
                 </Button>
@@ -171,10 +172,9 @@ function ProfileSectionContent({
               {/* 경력기술서 버튼 */}
               {profile.career_document_url && (
                 <Button
-                  variant="outline"
+                  variant="neon"
                   size="default"
                   asChild
-                  className="group relative overflow-hidden transition-all hover:border-pink-500/50 hover:shadow-lg hover:shadow-pink-500/20 dark:hover:bg-pink-500/10"
                 >
                   <a
                     href={profile.career_document_url}
@@ -182,7 +182,7 @@ function ProfileSectionContent({
                     rel="noopener noreferrer"
                     className="flex items-center gap-2"
                   >
-                    <FileText className="size-4 transition-transform group-hover:scale-110" />
+                    <FileText className="size-4" />
                     <span>경력기술서</span>
                   </a>
                 </Button>
@@ -196,15 +196,15 @@ function ProfileSectionContent({
 }
 
 /**
- * 로딩 상태 Skeleton UI
+ * 로딩 상태 Skeleton UI - 사이버펑크 스타일
  */
 function ProfileSectionSkeleton() {
   return (
-    <section className="border-border/50 from-background via-background to-accent/5 overflow-hidden rounded-2xl border bg-gradient-to-br p-8 shadow-lg md:p-12">
+    <section className="relative overflow-hidden rounded-lg border border-[--color-neon-cyan-800] bg-[--color-black-elevated] p-8 shadow-[0_0_20px_rgba(0,240,255,0.1)] md:p-12">
       <div className="flex flex-col items-center gap-6 md:flex-row md:items-start md:gap-8">
         {/* 프로필 이미지 스켈레톤 */}
         <div className="shrink-0">
-          <Skeleton className="size-24 rounded-full md:size-32" />
+          <Skeleton className="size-24 rounded-full border-2 border-[--color-neon-cyan-700] bg-[--color-black-surface] md:size-32" />
         </div>
 
         {/* 텍스트 및 버튼 스켈레톤 */}
@@ -212,17 +212,17 @@ function ProfileSectionSkeleton() {
           {/* 이름 및 MBTI 스켈레톤 */}
           <div className="flex flex-col items-center gap-3 md:items-start">
             <div className="flex items-center gap-3">
-              <Skeleton className="h-10 w-48 md:h-12 md:w-64" />
-              <Skeleton className="h-7 w-16 rounded-full" />
+              <Skeleton className="h-10 w-48 bg-[--color-black-surface] md:h-12 md:w-64" />
+              <Skeleton className="h-7 w-16 rounded-full bg-[--color-black-surface]" />
             </div>
-            <Skeleton className="h-1 w-16 rounded-full" />
+            <Skeleton className="h-0.5 w-20 rounded-full bg-[--color-neon-cyan-800]" />
           </div>
 
           {/* 버튼 스켈레톤 */}
           <div className="flex gap-3">
-            <Skeleton className="h-9 w-28" />
-            <Skeleton className="h-9 w-28" />
-            <Skeleton className="h-9 w-32" />
+            <Skeleton className="h-9 w-28 border border-[--color-neon-cyan-800] bg-[--color-black-surface]" />
+            <Skeleton className="h-9 w-28 border border-[--color-neon-cyan-800] bg-[--color-black-surface]" />
+            <Skeleton className="h-9 w-32 border border-[--color-neon-cyan-800] bg-[--color-black-surface]" />
           </div>
         </div>
       </div>
@@ -231,7 +231,7 @@ function ProfileSectionSkeleton() {
 }
 
 /**
- * 에러 상태 UI
+ * 에러 상태 UI - 사이버펑크 스타일
  */
 interface ProfileSectionErrorProps {
   error: string
@@ -239,11 +239,11 @@ interface ProfileSectionErrorProps {
 
 function ProfileSectionError({ error }: ProfileSectionErrorProps) {
   return (
-    <section className="border-destructive/30 bg-destructive/5 overflow-hidden rounded-2xl border p-8 shadow-lg md:p-12">
+    <section className="overflow-hidden rounded-lg border border-[--color-neon-orange-600] bg-[--color-black-elevated] p-8 shadow-[0_0_25px_rgba(255,107,0,0.3)] md:p-12">
       <div className="flex flex-col items-center gap-4 text-center">
-        <div className="bg-destructive/10 rounded-full p-3">
+        <div className="rounded-full border-2 border-[--color-neon-orange-500] bg-[--color-neon-orange-500]/10 p-3 shadow-[0_0_15px_var(--color-neon-orange-500)]">
           <svg
-            className="text-destructive size-6"
+            className="size-6 text-[--color-neon-orange-500]"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -257,13 +257,13 @@ function ProfileSectionError({ error }: ProfileSectionErrorProps) {
           </svg>
         </div>
         <div className="space-y-2">
-          <h3 className="text-destructive text-lg font-semibold">
+          <h3 className="text-lg font-semibold text-[--color-neon-orange-500] text-glow-subtle">
             프로필을 불러올 수 없습니다
           </h3>
-          <p className="text-muted-foreground text-sm">{error}</p>
+          <p className="font-mono text-sm text-[--color-neon-orange-600]">{error}</p>
         </div>
         <Button
-          variant="outline"
+          variant="neon"
           size="sm"
           onClick={() => window.location.reload()}
           className="mt-2"
@@ -276,15 +276,15 @@ function ProfileSectionError({ error }: ProfileSectionErrorProps) {
 }
 
 /**
- * 빈 데이터 상태 UI
+ * 빈 데이터 상태 UI - 사이버펑크 스타일
  */
 function ProfileSectionEmpty() {
   return (
-    <section className="border-border/50 bg-muted/30 overflow-hidden rounded-2xl border p-8 shadow-lg md:p-12">
+    <section className="overflow-hidden rounded-lg border border-[--color-neon-cyan-800] bg-[--color-black-elevated] p-8 shadow-[0_0_15px_rgba(0,240,255,0.1)] md:p-12">
       <div className="flex flex-col items-center gap-4 text-center">
-        <div className="bg-muted rounded-full p-3">
+        <div className="rounded-full border-2 border-[--color-neon-cyan-600] bg-[--color-black-surface] p-3">
           <svg
-            className="text-muted-foreground size-6"
+            className="size-6 text-[--color-neon-cyan-600]"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -298,10 +298,10 @@ function ProfileSectionEmpty() {
           </svg>
         </div>
         <div className="space-y-2">
-          <h3 className="text-muted-foreground text-lg font-semibold">
+          <h3 className="text-lg font-semibold text-[--color-neon-cyan-600]">
             프로필 정보가 없습니다
           </h3>
-          <p className="text-muted-foreground text-sm">
+          <p className="font-mono text-sm text-[--color-neon-cyan-700]">
             관리자 페이지에서 프로필을 추가해주세요.
           </p>
         </div>

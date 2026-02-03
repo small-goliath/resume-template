@@ -105,7 +105,7 @@ interface AwardCardProps {
 function AwardCard({ award }: AwardCardProps) {
   return (
     <Card
-      variant="outline"
+      variant="neon-border"
       className="group flex h-full flex-col overflow-hidden transition-all duration-300 hover:border-yellow-500/30 hover:shadow-lg hover:shadow-yellow-500/5 dark:hover:border-yellow-500/30"
     >
       {/* 인증서 이미지 (4:3 비율) */}
@@ -147,7 +147,7 @@ function AwardCard({ award }: AwardCardProps) {
       {award.award_url && (
         <CardFooter className="mt-auto pt-0">
           <Button
-            variant="outline"
+            variant="neon-ghost"
             size="sm"
             className="w-full gap-2 transition-all duration-300 group-hover:border-yellow-500/50 group-hover:bg-yellow-500/5"
             onClick={() => {

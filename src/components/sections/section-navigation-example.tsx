@@ -22,7 +22,7 @@ export function SectionNavigationExample() {
           value="timeline"
           title="경력 타임라인"
           description="주요 경력 사항을 시간순으로 정리했습니다"
-          variant="elevated"
+          variant="cyber"
         >
           <div className="space-y-4">
             {/* TODO: 타임라인 컴포넌트 추가 */}
@@ -76,7 +76,7 @@ export function SectionNavigationExample() {
           value="projects"
           title="사이드프로젝트"
           description="개인 및 팀 프로젝트 포트폴리오"
-          variant="outline"
+          variant="neon-border"
         >
           <div className="space-y-6">
             {/* TODO: 프로젝트 카드들 추가 */}

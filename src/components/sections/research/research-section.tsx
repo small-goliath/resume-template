@@ -108,7 +108,7 @@ function ResearchCard({ research }: ResearchCardProps) {
 
   return (
     <Card
-      variant="outline"
+      variant="neon-border"
       className="group flex h-full flex-col transition-all duration-300 hover:border-blue-500/30 hover:shadow-lg hover:shadow-blue-500/5 dark:hover:border-blue-400/30"
     >
       <CardHeader className="space-y-3">
@@ -134,7 +134,7 @@ function ResearchCard({ research }: ResearchCardProps) {
           {/* 상세보기 버튼 (research_url이 있을 때) */}
           {research.research_url && (
             <Button
-              variant="outline"
+              variant="neon-ghost"
               size="sm"
               className="flex-1 gap-2 transition-all duration-300 group-hover:border-blue-500/50 group-hover:bg-blue-500/5"
               onClick={() => {
@@ -150,7 +150,7 @@ function ResearchCard({ research }: ResearchCardProps) {
           {/* 문서 보기 버튼 (document_url이 있을 때) */}
           {research.document_url && (
             <Button
-              variant="outline"
+              variant="neon-ghost"
               size="sm"
               className="flex-1 gap-2 transition-all duration-300 group-hover:border-blue-500/50 group-hover:bg-blue-500/5"
               onClick={() => {
