@@ -284,7 +284,9 @@ class ExternalActivityUpdate(BaseModel):
 
 class DailyRoutineCreate(BaseModel):
     start_hour: int = Field(..., ge=0, le=23, description="시작 시간 (0-23)")
+    start_minute: int = Field(default=0, ge=0, le=59, description="시작 분 (0-59)")
     end_hour: int = Field(..., ge=0, le=23, description="종료 시간 (0-23)")
+    end_minute: int = Field(default=0, ge=0, le=59, description="종료 분 (0-59)")
     label: str = Field(..., min_length=1, max_length=100, description="루틴 라벨")
     color: str = Field(..., description="네온 색상 (neon-cyan, neon-magenta, neon-purple, neon-green, neon-orange)")
     intensity: str = Field(..., description="글로우 강도 (dim, medium, bright)")
@@ -311,7 +313,9 @@ class DailyRoutineCreate(BaseModel):
 
 class DailyRoutineUpdate(BaseModel):
     start_hour: Optional[int] = Field(None, ge=0, le=23)
+    start_minute: Optional[int] = Field(None, ge=0, le=59)
     end_hour: Optional[int] = Field(None, ge=0, le=23)
+    end_minute: Optional[int] = Field(None, ge=0, le=59)
     label: Optional[str] = Field(None, min_length=1, max_length=100)
     color: Optional[str] = None
     intensity: Optional[str] = None
@@ -1640,10 +1644,7 @@ async def get_daily_routine():
         supabase: Client = create_client(SUPABASE_URL, SUPABASE_ANON_KEY)
         response = supabase.table("daily_routine").select("*").order("sort_order").execute()
 
-        return {
-            "message": "Daily routine entries retrieved successfully",
-            "data": response.data
-        }
+        return response.data
     except HTTPException:
         raise
     except Exception as e:

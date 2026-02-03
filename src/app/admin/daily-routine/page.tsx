@@ -73,33 +73,49 @@ const intensityOptions = [
  * 자정을 넘어가는 경우도 처리 (예: 23시 ~ 2시)
  */
 function checkTimeOverlap(
-  start1: number,
-  end1: number,
-  start2: number,
-  end2: number
+  start1Hour: number,
+  start1Minute: number,
+  end1Hour: number,
+  end1Minute: number,
+  start2Hour: number,
+  start2Minute: number,
+  end2Hour: number,
+  end2Minute: number
 ): boolean {
-  // 시간 범위를 정규화 (자정 넘어가는 경우 두 구간으로 분리)
-  const normalizeRange = (start: number, end: number) => {
-    if (start > end) {
-      // 자정 넘어감: 23시 ~ 2시 → [(23, 23), (0, 2)]
-      return [
-        { start, end: 23 },
-        { start: 0, end },
-      ]
-    }
-    return [{ start, end }]
+  // 시간을 분 단위로 변환 (0-1439분, 24시간 = 1440분)
+  const toMinutes = (hour: number, minute: number) => hour * 60 + minute
+
+  let start1 = toMinutes(start1Hour, start1Minute)
+  let end1 = toMinutes(end1Hour, end1Minute)
+  let start2 = toMinutes(start2Hour, start2Minute)
+  let end2 = toMinutes(end2Hour, end2Minute)
+
+  // 자정 경계 처리: 종료 시간이 시작 시간보다 작으면 다음 날로 간주 (1440분 추가)
+  if (end1 < start1) end1 += 1440
+  if (end2 < start2) end2 += 1440
+
+  // 겹침 체크
+  // 1) 기본 케이스: 두 구간이 같은 날 안에 있는 경우
+  if (start1 <= end2 && start2 <= end1) {
+    return true
   }
 
-  const ranges1 = normalizeRange(start1, end1)
-  const ranges2 = normalizeRange(start2, end2)
+  // 2) 자정 경계를 넘는 경우: 다음 날 구간과도 비교
+  // 첫 번째 구간이 자정을 넘는 경우
+  if (end1 >= 1440) {
+    const nextDayStart1 = start1 - 1440
+    const nextDayEnd1 = end1 - 1440
+    if (nextDayStart1 <= end2 && start2 <= nextDayEnd1) {
+      return true
+    }
+  }
 
-  // 모든 구간 조합에 대해 겹침 체크
-  for (const range1 of ranges1) {
-    for (const range2 of ranges2) {
-      // 겹침 조건: range1의 시작이 range2 끝 이하 AND range2의 시작이 range1 끝 이하
-      if (range1.start <= range2.end && range2.start <= range1.end) {
-        return true
-      }
+  // 두 번째 구간이 자정을 넘는 경우
+  if (end2 >= 1440) {
+    const nextDayStart2 = start2 - 1440
+    const nextDayEnd2 = end2 - 1440
+    if (start1 <= nextDayEnd2 && nextDayStart2 <= end1) {
+      return true
     }
   }
 
@@ -110,7 +126,7 @@ function checkTimeOverlap(
  * 현재 입력값과 겹치는 기존 루틴들 찾기
  */
 function findOverlappingRoutines(
-  currentRoutine: { start_hour: number; end_hour: number; id?: string },
+  currentRoutine: { start_hour: number; start_minute: number; end_hour: number; end_minute: number; id?: string },
   allRoutines: DailyRoutine[]
 ): DailyRoutine[] {
   return allRoutines.filter((routine) => {
@@ -121,9 +137,13 @@ function findOverlappingRoutines(
 
     return checkTimeOverlap(
       currentRoutine.start_hour,
+      currentRoutine.start_minute,
       currentRoutine.end_hour,
+      currentRoutine.end_minute,
       routine.start_hour,
-      routine.end_hour
+      routine.start_minute || 0,
+      routine.end_hour,
+      routine.end_minute || 0
     )
   })
 }
@@ -133,7 +153,9 @@ function findOverlappingRoutines(
  */
 const routineSchema = z.object({
   start_hour: z.number().min(0).max(23),
+  start_minute: z.number().min(0).max(59),
   end_hour: z.number().min(0).max(23),
+  end_minute: z.number().min(0).max(59),
   label: z.string().min(1, '라벨을 입력해주세요').max(100, '라벨은 100자 이내여야 합니다'),
   color: z.enum(['neon-cyan', 'neon-magenta', 'neon-purple', 'neon-green', 'neon-orange']),
   intensity: z.enum(['dim', 'medium', 'bright']),
@@ -162,7 +184,9 @@ export default function AdminDailyRoutinePage() {
     resolver: zodResolver(routineSchema),
     defaultValues: {
       start_hour: 0,
+      start_minute: 0,
       end_hour: 1,
+      end_minute: 0,
       label: '',
       color: 'neon-cyan',
       intensity: 'medium',
@@ -173,7 +197,9 @@ export default function AdminDailyRoutinePage() {
   const selectedColor = watch('color')
   const selectedIntensity = watch('intensity')
   const watchedStartHour = watch('start_hour')
+  const watchedStartMinute = watch('start_minute')
   const watchedEndHour = watch('end_hour')
+  const watchedEndMinute = watch('end_minute')
 
   /**
    * 현재 입력값과 겹치는 루틴들 계산
@@ -186,12 +212,14 @@ export default function AdminDailyRoutinePage() {
     return findOverlappingRoutines(
       {
         start_hour: watchedStartHour,
+        start_minute: watchedStartMinute || 0,
         end_hour: watchedEndHour,
+        end_minute: watchedEndMinute || 0,
         id: editingItem?.id,
       },
       routines
     )
-  }, [routines, watchedStartHour, watchedEndHour, editingItem?.id])
+  }, [routines, watchedStartHour, watchedStartMinute, watchedEndHour, watchedEndMinute, editingItem?.id])
 
   /**
    * 새 루틴 추가 버튼 클릭
@@ -216,7 +244,9 @@ export default function AdminDailyRoutinePage() {
     setEditingItem(item)
     reset({
       start_hour: item.start_hour,
+      start_minute: item.start_minute || 0,
       end_hour: item.end_hour,
+      end_minute: item.end_minute || 0,
       label: item.label,
       color: item.color,
       intensity: item.intensity,
@@ -286,8 +316,11 @@ export default function AdminDailyRoutinePage() {
   /**
    * 시간 포맷팅 (0-23시)
    */
-  const formatHour = (hour: number) => {
-    return `${hour.toString().padStart(2, '0')}:00`
+  /**
+   * 시간을 HH:MM 형식으로 포맷
+   */
+  const formatTime = (hour: number, minute: number = 0) => {
+    return `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`
   }
 
   /**
@@ -311,7 +344,6 @@ export default function AdminDailyRoutinePage() {
       <AdminHeader
         title="일일 루틴 관리"
         description="24시간 루틴 시계 데이터 관리"
-        icon={<Clock className="h-6 w-6" />}
       />
 
       {/* 추가 버튼 */}
@@ -356,7 +388,7 @@ export default function AdminDailyRoutinePage() {
                     className="border-[--color-neon-cyan-800] hover:bg-[--color-black-surface]"
                   >
                     <TableCell className="font-mono text-[--color-neon-cyan-400]">
-                      {formatHour(routine.start_hour)} ~ {formatHour(routine.end_hour)}
+                      {formatTime(routine.start_hour, routine.start_minute || 0)} ~ {formatTime(routine.end_hour, routine.end_minute || 0)}
                     </TableCell>
                     <TableCell className="text-[--color-neon-cyan-400]">{routine.label}</TableCell>
                     <TableCell>
@@ -403,7 +435,7 @@ export default function AdminDailyRoutinePage() {
 
       {/* 생성/수정 다이얼로그 */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="border-[--color-neon-cyan-700] bg-[--color-black-elevated] sm:max-w-[500px]">
+        <DialogContent className="!bg-[--color-black-elevated] border-[--color-neon-cyan-700] sm:max-w-[500px]">
           <DialogHeader>
             <DialogTitle className="text-[--color-neon-cyan-500]">
               {editingItem ? '루틴 수정' : '루틴 추가'}
@@ -426,7 +458,7 @@ export default function AdminDailyRoutinePage() {
                     <ul className="space-y-1 text-sm text-[--color-neon-orange-400]">
                       {overlappingRoutines.map((routine) => (
                         <li key={routine.id} className="font-mono">
-                          • {routine.label} ({formatHour(routine.start_hour)} ~ {formatHour(routine.end_hour)})
+                          • {routine.label} ({formatTime(routine.start_hour, routine.start_minute || 0)} ~ {formatTime(routine.end_hour, routine.end_minute || 0)})
                         </li>
                       ))}
                     </ul>
@@ -439,39 +471,77 @@ export default function AdminDailyRoutinePage() {
             )}
 
             {/* 시작 시간 */}
-            <div className="space-y-2">
-              <Label htmlFor="start_hour" className="text-[--color-neon-cyan-500]">
-                시작 시간 (0-23시)
-              </Label>
-              <Input
-                id="start_hour"
-                type="number"
-                min={0}
-                max={23}
-                {...register('start_hour', { valueAsNumber: true })}
-                className="border-[--color-neon-cyan-700] bg-[--color-black-surface] text-[--color-neon-cyan-400]"
-              />
-              {errors.start_hour && (
-                <p className="text-sm text-[--color-neon-orange-500]">{errors.start_hour.message}</p>
-              )}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="start_hour" className="text-[--color-neon-cyan-500]">
+                  시작 시간 (0-23시)
+                </Label>
+                <Input
+                  id="start_hour"
+                  type="number"
+                  min={0}
+                  max={23}
+                  {...register('start_hour', { valueAsNumber: true })}
+                  className="border-[--color-neon-cyan-700] bg-[--color-black-surface] text-[--color-neon-cyan-400]"
+                />
+                {errors.start_hour && (
+                  <p className="text-sm text-[--color-neon-orange-500]">{errors.start_hour.message}</p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="start_minute" className="text-[--color-neon-cyan-500]">
+                  시작 분 (0-59분)
+                </Label>
+                <Input
+                  id="start_minute"
+                  type="number"
+                  min={0}
+                  max={59}
+                  {...register('start_minute', { valueAsNumber: true })}
+                  className="border-[--color-neon-cyan-700] bg-[--color-black-surface] text-[--color-neon-cyan-400]"
+                />
+                {errors.start_minute && (
+                  <p className="text-sm text-[--color-neon-orange-500]">{errors.start_minute.message}</p>
+                )}
+              </div>
             </div>
 
             {/* 종료 시간 */}
-            <div className="space-y-2">
-              <Label htmlFor="end_hour" className="text-[--color-neon-cyan-500]">
-                종료 시간 (0-23시)
-              </Label>
-              <Input
-                id="end_hour"
-                type="number"
-                min={0}
-                max={23}
-                {...register('end_hour', { valueAsNumber: true })}
-                className="border-[--color-neon-cyan-700] bg-[--color-black-surface] text-[--color-neon-cyan-400]"
-              />
-              {errors.end_hour && (
-                <p className="text-sm text-[--color-neon-orange-500]">{errors.end_hour.message}</p>
-              )}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="end_hour" className="text-[--color-neon-cyan-500]">
+                  종료 시간 (0-23시)
+                </Label>
+                <Input
+                  id="end_hour"
+                  type="number"
+                  min={0}
+                  max={23}
+                  {...register('end_hour', { valueAsNumber: true })}
+                  className="border-[--color-neon-cyan-700] bg-[--color-black-surface] text-[--color-neon-cyan-400]"
+                />
+                {errors.end_hour && (
+                  <p className="text-sm text-[--color-neon-orange-500]">{errors.end_hour.message}</p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="end_minute" className="text-[--color-neon-cyan-500]">
+                  종료 분 (0-59분)
+                </Label>
+                <Input
+                  id="end_minute"
+                  type="number"
+                  min={0}
+                  max={59}
+                  {...register('end_minute', { valueAsNumber: true })}
+                  className="border-[--color-neon-cyan-700] bg-[--color-black-surface] text-[--color-neon-cyan-400]"
+                />
+                {errors.end_minute && (
+                  <p className="text-sm text-[--color-neon-orange-500]">{errors.end_minute.message}</p>
+                )}
+              </div>
             </div>
 
             {/* 라벨 */}
@@ -581,11 +651,12 @@ export default function AdminDailyRoutinePage() {
 
       {/* 삭제 확인 다이얼로그 */}
       <DeleteConfirmDialog
-        isOpen={isDeleteDialogOpen}
-        onClose={() => setIsDeleteDialogOpen(false)}
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
         onConfirm={confirmDelete}
         isDeleting={isDeleting}
-        itemName={deletingItem?.label || ''}
+        title="루틴 삭제"
+        description={`"${deletingItem?.label || ''}" 루틴을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.`}
       />
     </div>
   )

@@ -223,11 +223,8 @@ function ProfileSectionContent({
             {/* 섹션 제목 */}
             <div className="space-y-2 text-center">
               <h3 className="text-xl font-bold text-[--color-neon-cyan-500] text-glow-medium">
-                📅 일일 루틴 (Daily Routine)
+                📅 일일 루틴
               </h3>
-              <p className="text-sm text-[--color-neon-cyan-700]">
-                24시간 아날로그 시계 (KST 기준)
-              </p>
             </div>
 
             {/* 시계 컴포넌트 */}

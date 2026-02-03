@@ -145,7 +145,9 @@ export interface DailyRoutine {
   id: string
   profile_id: string
   start_hour: number // 0-23
+  start_minute: number // 0-59
   end_hour: number // 0-23
+  end_minute: number // 0-59
   label: string
   color: 'neon-cyan' | 'neon-magenta' | 'neon-purple' | 'neon-green' | 'neon-orange'
   intensity: 'dim' | 'medium' | 'bright'

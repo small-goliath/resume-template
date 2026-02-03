@@ -7,13 +7,15 @@
 -- Supabase Dashboard에서 실행 전에 아래 명령으로 profile_id 확인:
 -- SELECT id FROM profile LIMIT 1;
 
-INSERT INTO daily_routine (profile_id, start_hour, end_hour, label, color, intensity, sort_order)
+INSERT INTO daily_routine (profile_id, start_hour, start_minute, end_hour, end_minute, label, color, intensity, sort_order)
 VALUES
   -- profile_id를 실제 값으로 교체
   (
     (SELECT id FROM profile LIMIT 1),  -- 첫 번째 프로필 ID 자동 가져오기
     0,
+    0,
     5,
+    0,
     '취침',
     'neon-cyan',
     'dim',
@@ -22,7 +24,9 @@ VALUES
   (
     (SELECT id FROM profile LIMIT 1),
     6,
+    0,
     6,
+    0,
     '출근',
     'neon-orange',
     'bright',
@@ -31,7 +35,9 @@ VALUES
   (
     (SELECT id FROM profile LIMIT 1),
     7,
+    0,
     8,
+    0,
     '재취침',
     'neon-cyan',
     'dim',
@@ -40,7 +46,9 @@ VALUES
   (
     (SELECT id FROM profile LIMIT 1),
     13,
+    0,
     17,
+    0,
     '회사업무',
     'neon-green',
     'medium',
@@ -49,7 +57,9 @@ VALUES
   (
     (SELECT id FROM profile LIMIT 1),
     19,
+    0,
     20,
+    0,
     '자기계발',
     'neon-magenta',
     'bright',
@@ -58,7 +68,9 @@ VALUES
   (
     (SELECT id FROM profile LIMIT 1),
     21,
+    0,
     21,
+    0,
     '퇴근',
     'neon-orange',
     'bright',
@@ -67,6 +79,8 @@ VALUES
   (
     (SELECT id FROM profile LIMIT 1),
     23,
+    0,
+    0,
     0,
     '휴식/제2외국어',
     'neon-purple',
@@ -78,7 +92,9 @@ VALUES
 SELECT
   id,
   start_hour,
+  start_minute,
   end_hour,
+  end_minute,
   label,
   color,
   intensity,

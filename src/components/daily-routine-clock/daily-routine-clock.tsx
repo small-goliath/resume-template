@@ -54,23 +54,31 @@ function getKSTTime(): Date {
 /**
  * 시간대 호(Arc) SVG Path 생성
  * @param startHour 시작 시간 (0-23)
+ * @param startMinute 시작 분 (0-59)
  * @param endHour 종료 시간 (0-23)
+ * @param endMinute 종료 분 (0-59)
  * @param radius 호의 반지름
  * @param width 호의 너비
  */
 function createArcPath(
   startHour: number,
+  startMinute: number,
   endHour: number,
+  endMinute: number,
   radius: number,
   width: number
 ): string {
-  // 24시간 기준 각도 계산 (12시 방향이 0도)
-  const startAngle = (startHour / 24) * 360 - 90 // -90은 12시 방향 기준
-  const endAngle = (endHour / 24) * 360 - 90
+  // 시간을 소수점으로 변환 (예: 13시 30분 → 13.5)
+  const startDecimal = startHour + startMinute / 60
+  const endDecimal = endHour + endMinute / 60
 
-  // 자정 경계 처리 (예: 23시 ~ 5시)
+  // 24시간 기준 각도 계산 (12시 방향이 0도)
+  const startAngle = (startDecimal / 24) * 360 - 90 // -90은 12시 방향 기준
+  const endAngle = (endDecimal / 24) * 360 - 90
+
+  // 자정 경계 처리 (예: 23시 30분 ~ 5시 15분)
   let actualEndAngle = endAngle
-  if (endHour < startHour) {
+  if (endDecimal < startDecimal) {
     actualEndAngle = endAngle + 360
   }
 
@@ -112,7 +120,9 @@ function RoutineArc({ routine }: { routine: DailyRoutine }) {
 
   const arcPath = createArcPath(
     routine.start_hour,
+    routine.start_minute || 0,
     routine.end_hour,
+    routine.end_minute || 0,
     ROUTINE_ARC_RADIUS,
     ROUTINE_ARC_WIDTH
   )
@@ -208,6 +218,13 @@ function ClockHand({
 }
 
 /**
+ * 시간 포맷 헬퍼 함수 (HH:MM)
+ */
+function formatTime(hour: number, minute: number = 0): string {
+  return `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`
+}
+
+/**
  * 범례 (Legend) 컴포넌트
  */
 function RoutineLegend({ routines }: { routines: DailyRoutine[] | undefined }) {
@@ -233,7 +250,7 @@ function RoutineLegend({ routines }: { routines: DailyRoutine[] | undefined }) {
 
             {/* 루틴 라벨 */}
             <span className="font-mono text-xs text-neon-cyan-300">
-              {routine.label} ({routine.start_hour}h - {routine.end_hour}h)
+              {routine.label} ({formatTime(routine.start_hour, routine.start_minute || 0)} - {formatTime(routine.end_hour, routine.end_minute || 0)})
             </span>
           </div>
         )
@@ -336,20 +353,6 @@ export function DailyRoutineClock() {
             stroke={COLOR_MAP['neon-cyan']}
             strokeWidth="2"
           />
-
-          {/* 중앙 텍스트 "small-goliath" */}
-          <text
-            x={CLOCK_CENTER_X}
-            y={CLOCK_CENTER_Y}
-            textAnchor="middle"
-            dominantBaseline="middle"
-            className="fill-neon-cyan-500 font-mono text-sm font-bold"
-            style={{
-              textShadow: '0 0 10px var(--color-neon-cyan-500)',
-            }}
-          >
-            small-goliath
-          </text>
 
           {/* 중앙 원 (시침/분침 고정점) */}
           <circle
