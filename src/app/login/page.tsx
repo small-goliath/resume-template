@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -25,7 +24,6 @@ const loginSchema = z.object({
 type LoginFormData = z.infer<typeof loginSchema>
 
 export default function LoginPage() {
-  const router = useRouter()
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -47,9 +45,9 @@ export default function LoginPage() {
       // 로그인 성공 - 관리자 페이지로 리다이렉트
       // window.location.href를 사용하여 완전한 페이지 새로고침
       window.location.href = '/admin'
+      // 리다이렉트 중이므로 로딩 상태 유지
     } catch (err) {
       setError('토큰이 올바르지 않습니다')
-    } finally {
       setIsLoading(false)
     }
   }
