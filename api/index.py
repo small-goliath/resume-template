@@ -282,6 +282,42 @@ class ExternalActivityUpdate(BaseModel):
     sort_order: Optional[int] = Field(None, ge=0)
 
 
+class DailyRoutineCreate(BaseModel):
+    start_hour: int = Field(..., ge=0, le=23, description="시작 시간 (0-23)")
+    end_hour: int = Field(..., ge=0, le=23, description="종료 시간 (0-23)")
+    label: str = Field(..., min_length=1, max_length=100, description="루틴 라벨")
+    color: str = Field(..., description="네온 색상 (neon-cyan, neon-magenta, neon-purple, neon-green, neon-orange)")
+    intensity: str = Field(..., description="글로우 강도 (dim, medium, bright)")
+    sort_order: int = Field(default=0, ge=0, description="정렬 순서")
+
+    # Validate color values
+    @classmethod
+    def __get_validators__(cls):
+        yield cls.validate_color_and_intensity
+
+    @classmethod
+    def validate_color_and_intensity(cls, values):
+        valid_colors = ['neon-cyan', 'neon-magenta', 'neon-purple', 'neon-green', 'neon-orange']
+        valid_intensities = ['dim', 'medium', 'bright']
+
+        if 'color' in values and values['color'] not in valid_colors:
+            raise ValueError(f"color must be one of {valid_colors}")
+
+        if 'intensity' in values and values['intensity'] not in valid_intensities:
+            raise ValueError(f"intensity must be one of {valid_intensities}")
+
+        return values
+
+
+class DailyRoutineUpdate(BaseModel):
+    start_hour: Optional[int] = Field(None, ge=0, le=23)
+    end_hour: Optional[int] = Field(None, ge=0, le=23)
+    label: Optional[str] = Field(None, min_length=1, max_length=100)
+    color: Optional[str] = None
+    intensity: Optional[str] = None
+    sort_order: Optional[int] = Field(None, ge=0)
+
+
 # Authentication Dependency
 def verify_admin_token(admin_token: Optional[str] = Cookie(None)):
     """
@@ -1588,3 +1624,139 @@ async def delete_activity(
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to delete activity: {str(e)}")
+
+
+# ==========================================
+# DailyRoutine Endpoints
+# ==========================================
+
+@app.get("/daily-routine")
+async def get_daily_routine():
+    """Get all daily routine entries (sorted by sort_order)"""
+    try:
+        if not SUPABASE_URL or not SUPABASE_ANON_KEY:
+            raise HTTPException(status_code=500, detail="Supabase credentials not configured")
+
+        supabase: Client = create_client(SUPABASE_URL, SUPABASE_ANON_KEY)
+        response = supabase.table("daily_routine").select("*").order("sort_order").execute()
+
+        return {
+            "message": "Daily routine entries retrieved successfully",
+            "data": response.data
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to fetch daily routine: {str(e)}")
+
+
+@app.post("/daily-routine")
+async def create_daily_routine(
+    routine_data: DailyRoutineCreate,
+    _: str = Depends(verify_admin_token)
+):
+    """Create a new daily routine entry (관리자 인증 필요)"""
+    try:
+        if not SUPABASE_URL or not SUPABASE_SERVICE_ROLE_KEY:
+            raise HTTPException(status_code=500, detail="Supabase credentials not configured")
+
+        # Validate color and intensity
+        valid_colors = ['neon-cyan', 'neon-magenta', 'neon-purple', 'neon-green', 'neon-orange']
+        valid_intensities = ['dim', 'medium', 'bright']
+
+        if routine_data.color not in valid_colors:
+            raise HTTPException(status_code=400, detail=f"Invalid color. Must be one of {valid_colors}")
+
+        if routine_data.intensity not in valid_intensities:
+            raise HTTPException(status_code=400, detail=f"Invalid intensity. Must be one of {valid_intensities}")
+
+        # Get profile_id (assuming single user)
+        supabase: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
+        profile_response = supabase.table("profile").select("id").limit(1).execute()
+
+        if not profile_response.data:
+            raise HTTPException(status_code=404, detail="Profile not found")
+
+        profile_id = profile_response.data[0]["id"]
+
+        # Create routine entry
+        payload = routine_data.model_dump()
+        payload["profile_id"] = profile_id
+
+        response = supabase.table("daily_routine").insert(payload).execute()
+
+        return {
+            "message": "Daily routine entry created successfully",
+            "data": response.data[0]
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to create daily routine: {str(e)}")
+
+
+@app.put("/daily-routine/{routine_id}")
+async def update_daily_routine(
+    routine_id: str,
+    routine_data: DailyRoutineUpdate,
+    _: str = Depends(verify_admin_token)
+):
+    """Update a daily routine entry by ID (관리자 인증 필요)"""
+    try:
+        if not SUPABASE_URL or not SUPABASE_SERVICE_ROLE_KEY:
+            raise HTTPException(status_code=500, detail="Supabase credentials not configured")
+
+        payload = routine_data.model_dump(exclude_unset=True)
+        if not payload:
+            raise HTTPException(status_code=400, detail="No fields to update")
+
+        # Validate color and intensity if provided
+        valid_colors = ['neon-cyan', 'neon-magenta', 'neon-purple', 'neon-green', 'neon-orange']
+        valid_intensities = ['dim', 'medium', 'bright']
+
+        if 'color' in payload and payload['color'] not in valid_colors:
+            raise HTTPException(status_code=400, detail=f"Invalid color. Must be one of {valid_colors}")
+
+        if 'intensity' in payload and payload['intensity'] not in valid_intensities:
+            raise HTTPException(status_code=400, detail=f"Invalid intensity. Must be one of {valid_intensities}")
+
+        supabase: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
+        response = supabase.table("daily_routine").update(payload).eq("id", routine_id).execute()
+
+        if not response.data:
+            raise HTTPException(status_code=404, detail="Daily routine entry not found")
+
+        return {
+            "message": "Daily routine entry updated successfully",
+            "data": response.data[0]
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to update daily routine: {str(e)}")
+
+
+@app.delete("/daily-routine/{routine_id}")
+async def delete_daily_routine(
+    routine_id: str,
+    _: str = Depends(verify_admin_token)
+):
+    """Delete a daily routine entry by ID (관리자 인증 필요)"""
+    try:
+        if not SUPABASE_URL or not SUPABASE_SERVICE_ROLE_KEY:
+            raise HTTPException(status_code=500, detail="Supabase credentials not configured")
+
+        supabase: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
+        response = supabase.table("daily_routine").delete().eq("id", routine_id).execute()
+
+        if not response.data:
+            raise HTTPException(status_code=404, detail="Daily routine entry not found")
+
+        return {
+            "message": "Daily routine entry deleted successfully",
+            "data": response.data[0]
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to delete daily routine: {str(e)}")
