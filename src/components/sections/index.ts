@@ -46,3 +46,12 @@ export { AwardsSection } from './awards'
 
 // 인턴십 섹션 컴포넌트
 export { InternshipsSection } from './internships'
+
+// 연구활동 섹션 컴포넌트
+export { ResearchSection } from './research'
+
+// 봉사활동 섹션 컴포넌트
+export { VolunteerSection } from './volunteer'
+
+// 대외활동 섹션 컴포넌트
+export { ActivitiesSection } from './activities'
