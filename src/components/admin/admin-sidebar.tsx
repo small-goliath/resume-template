@@ -14,6 +14,7 @@ import {
   LayoutDashboard,
   User,
   Clock,
+  Clock3,
   GraduationCap,
   Code2,
   Users,
@@ -46,6 +47,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   { name: '대시보드', href: '/admin', icon: LayoutDashboard },
   { name: '프로필', href: '/admin/profile', icon: User },
+  { name: '일일 루틴', href: '/admin/daily-routine', icon: Clock3 },
   { name: '타임라인', href: '/admin/timeline', icon: Clock },
   { name: '교육', href: '/admin/education', icon: GraduationCap },
   { name: '기술스택', href: '/admin/skills', icon: Code2 },
