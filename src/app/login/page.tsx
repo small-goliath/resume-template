@@ -39,14 +39,22 @@ export default function LoginPage() {
     setIsLoading(true)
     setError(null)
 
+    console.log('[LOGIN] 로그인 시도 시작:', data)
+
     try {
-      await apiClient.post('/auth/login', data)
+      console.log('[LOGIN] API 호출 전')
+      const response = await apiClient.post('/auth/login', data)
+      console.log('[LOGIN] API 호출 성공:', response)
 
       // 로그인 성공 - 관리자 페이지로 리다이렉트
       // window.location.href를 사용하여 완전한 페이지 새로고침
+      console.log('[LOGIN] /admin으로 리다이렉트 시도')
       window.location.href = '/admin'
       // 리다이렉트 중이므로 로딩 상태 유지
     } catch (err) {
+      console.error('[LOGIN] 에러 발생:', err)
+      console.error('[LOGIN] 에러 타입:', typeof err)
+      console.error('[LOGIN] 에러 상세:', JSON.stringify(err, null, 2))
       setError('토큰이 올바르지 않습니다')
       setIsLoading(false)
     }
