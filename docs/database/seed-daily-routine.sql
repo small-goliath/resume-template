@@ -67,7 +67,7 @@ VALUES
   (
     (SELECT id FROM profile LIMIT 1),
     23,
-    24,
+    0,
     '휴식/제2외국어',
     'neon-purple',
     'medium',
