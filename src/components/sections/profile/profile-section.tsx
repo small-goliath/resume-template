@@ -18,6 +18,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useProfile } from '@/lib/hooks/use-portfolio-data'
+import { DailyRoutineClock } from '@/components/daily-routine-clock/daily-routine-clock'
 import type { Profile } from '@/types'
 
 /**
@@ -213,6 +214,26 @@ function ProfileSectionContent({
                 </div>
               </div>
             )}
+          </div>
+        </div>
+
+        {/* 24시간 루틴 시계 섹션 */}
+        <div className="mt-8 border-t border-[--color-neon-cyan-800] pt-8">
+          <div className="space-y-6">
+            {/* 섹션 제목 */}
+            <div className="space-y-2 text-center">
+              <h3 className="text-xl font-bold text-[--color-neon-cyan-500] text-glow-medium">
+                📅 일일 루틴 (Daily Routine)
+              </h3>
+              <p className="text-sm text-[--color-neon-cyan-700]">
+                24시간 아날로그 시계 (KST 기준)
+              </p>
+            </div>
+
+            {/* 시계 컴포넌트 */}
+            <div className="flex justify-center">
+              <DailyRoutineClock />
+            </div>
           </div>
         </div>
       </div>
