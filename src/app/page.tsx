@@ -2,9 +2,11 @@
  * 메인 포트폴리오 페이지 - 사이버펑크/네온 풀스크린 레이아웃
  *
  * 각 섹션이 100vh로 구성되며, 스크롤 스냅으로 부드러운 전환 제공
+ * 섹션 진입 시 Glitch Slide 애니메이션 실행
  */
 
-import { Metadata } from 'next'
+'use client'
+
 import { SectionNavigationIndicator } from '@/components/section-navigation-indicator'
 import { ProfileSection } from '@/components/sections/profile'
 import { TimelineSection } from '@/components/sections/timeline'
@@ -17,19 +19,11 @@ import { InternshipsSection } from '@/components/sections/internships'
 import { ResearchSection } from '@/components/sections/research'
 import { VolunteerSection } from '@/components/sections/volunteer'
 import { ActivitiesSection } from '@/components/sections/activities'
-
-export const metadata: Metadata = {
-  title: '사이버펑크 포트폴리오 | Cyberpunk Developer',
-  description:
-    '사이버펑크 스타일의 개발자 포트폴리오. 경력, 기술 역량, 프로젝트를 네온 효과와 함께 소개합니다.',
-  openGraph: {
-    title: '사이버펑크 포트폴리오',
-    description: '네온이 빛나는 개발자의 세계',
-    type: 'website',
-  },
-}
+import { useSectionAnimation } from '@/hooks/use-section-animation'
 
 export default function HomePage() {
+  // 섹션 애니메이션 활성화
+  useSectionAnimation()
   return (
     <>
       {/* 섹션 네비게이션 인디케이터 - 화면 오른쪽 고정 */}
@@ -37,10 +31,10 @@ export default function HomePage() {
 
       {/* 풀스크린 섹션 컨테이너 */}
       <main className="relative">
-        {/* 1. 프로필 섹션 (Hero) */}
+        {/* 1. 프로필 섹션 (Hero) - 즉시 표시 */}
         <section
           id="profile"
-          className="section-fullscreen"
+          className="section-fullscreen opacity-100"
           data-section="profile"
         >
           <div className="container mx-auto max-w-7xl px-4 py-12 w-full">
@@ -51,7 +45,7 @@ export default function HomePage() {
         {/* 2. 타임라인 섹션 */}
         <section
           id="timeline"
-          className="section-fullscreen"
+          className="section-fullscreen opacity-0"
           data-section="timeline"
         >
           <div className="container mx-auto max-w-7xl px-4 py-12 w-full overflow-y-auto max-h-screen">
@@ -62,7 +56,7 @@ export default function HomePage() {
         {/* 3. 교육사항 섹션 */}
         <section
           id="education"
-          className="section-fullscreen"
+          className="section-fullscreen opacity-0"
           data-section="education"
         >
           <div className="container mx-auto max-w-7xl px-4 py-12 w-full overflow-y-auto max-h-screen">
@@ -71,7 +65,7 @@ export default function HomePage() {
         </section>
 
         {/* 4. 역량 섹션 */}
-        <section id="skills" className="section-fullscreen" data-section="skills">
+        <section id="skills" className="section-fullscreen opacity-0" data-section="skills">
           <div className="container mx-auto max-w-7xl px-4 py-12 w-full overflow-y-auto max-h-screen">
             <SkillsSection />
           </div>
@@ -80,7 +74,7 @@ export default function HomePage() {
         {/* 5. 동료평가 섹션 */}
         <section
           id="peer-reviews"
-          className="section-fullscreen"
+          className="section-fullscreen opacity-0"
           data-section="peer-reviews"
         >
           <div className="container mx-auto max-w-7xl px-4 py-12 w-full overflow-y-auto max-h-screen">
@@ -91,7 +85,7 @@ export default function HomePage() {
         {/* 6. 사이드프로젝트 섹션 */}
         <section
           id="projects"
-          className="section-fullscreen"
+          className="section-fullscreen opacity-0"
           data-section="projects"
         >
           <div className="container mx-auto max-w-7xl px-4 py-12 w-full overflow-y-auto max-h-screen">
@@ -100,7 +94,7 @@ export default function HomePage() {
         </section>
 
         {/* 7. 수상 섹션 */}
-        <section id="awards" className="section-fullscreen" data-section="awards">
+        <section id="awards" className="section-fullscreen opacity-0" data-section="awards">
           <div className="container mx-auto max-w-7xl px-4 py-12 w-full overflow-y-auto max-h-screen">
             <AwardsSection />
           </div>
@@ -109,7 +103,7 @@ export default function HomePage() {
         {/* 8. 인턴십 섹션 */}
         <section
           id="internships"
-          className="section-fullscreen"
+          className="section-fullscreen opacity-0"
           data-section="internships"
         >
           <div className="container mx-auto max-w-7xl px-4 py-12 w-full overflow-y-auto max-h-screen">
@@ -120,7 +114,7 @@ export default function HomePage() {
         {/* 9. 연구활동 섹션 */}
         <section
           id="research"
-          className="section-fullscreen"
+          className="section-fullscreen opacity-0"
           data-section="research"
         >
           <div className="container mx-auto max-w-7xl px-4 py-12 w-full overflow-y-auto max-h-screen">
@@ -131,7 +125,7 @@ export default function HomePage() {
         {/* 10. 봉사활동 섹션 */}
         <section
           id="volunteer"
-          className="section-fullscreen"
+          className="section-fullscreen opacity-0"
           data-section="volunteer"
         >
           <div className="container mx-auto max-w-7xl px-4 py-12 w-full overflow-y-auto max-h-screen">
@@ -142,7 +136,7 @@ export default function HomePage() {
         {/* 11. 대외활동 섹션 */}
         <section
           id="activities"
-          className="section-fullscreen"
+          className="section-fullscreen opacity-0"
           data-section="activities"
         >
           <div className="container mx-auto max-w-7xl px-4 py-12 w-full overflow-y-auto max-h-screen">

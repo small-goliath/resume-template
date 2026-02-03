@@ -341,6 +341,29 @@
     }
   }
 
+  /* 섹션 진입 애니메이션 - 부드러운 페이드 슬라이드 */
+  .section-enter {
+    animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    will-change: transform, opacity;
+  }
+
+  .section-enter-done {
+    will-change: auto; /* 메모리 최적화 */
+  }
+
+  /* 부드러운 페이드 슬라이드 업 애니메이션 */
+  @keyframes fadeSlideUp {
+    0% {
+      opacity: 0;
+      transform: translateY(40px) translateZ(0);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0) translateZ(0);
+    }
+  }
+
   /* 스크롤 성능 최적화 - passive event listener 지원 */
   .scroll-optimized {
     -webkit-overflow-scrolling: touch;
@@ -351,6 +374,20 @@
   @media (prefers-reduced-motion: reduce) {
     html {
       scroll-behavior: auto;
+    }
+
+    /* 섹션 애니메이션 단순화 */
+    .section-enter {
+      animation: fadeInSimple 0.2s ease-out forwards !important;
+    }
+
+    @keyframes fadeInSimple {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
     }
 
     *,
