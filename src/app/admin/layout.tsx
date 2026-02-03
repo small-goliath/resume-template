@@ -17,10 +17,10 @@ export default async function AdminLayout({
   // 쿠키에서 토큰 가져오기
   const cookieStore = await cookies()
   const adminToken = cookieStore.get('admin_token')?.value
-  const expectedToken = process.env.ADMIN_SECRET_TOKEN
 
-  // 토큰 검증
-  if (!adminToken || adminToken !== expectedToken) {
+  // 쿠키 존재 여부만 확인 (실제 검증은 FastAPI에서 수행)
+  // FastAPI의 모든 쓰기 API가 verify_admin_token 의존성을 사용하여 검증
+  if (!adminToken) {
     redirect('/login')
   }
   return (
