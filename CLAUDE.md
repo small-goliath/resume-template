@@ -103,6 +103,9 @@ npm run dev
 - Next.js와 FastAPI 서버를 동시에 실행
 - 환경변수로 로컬/프로덕션 API URL 분기
 
+**📚 상세 가이드:**
+로컬 개발 환경 설정, 문제 해결, 디버깅 팁은 `docs/LOCAL_DEVELOPMENT.md` 참조
+
 ## Architecture Patterns
 
 ### 1. API Routes via FastAPI
