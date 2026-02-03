@@ -45,8 +45,8 @@ export default function LoginPage() {
       await apiClient.post('/auth/login', data)
 
       // 로그인 성공 - 관리자 페이지로 리다이렉트
-      router.push('/admin')
-      router.refresh()
+      // window.location.href를 사용하여 완전한 페이지 새로고침
+      window.location.href = '/admin'
     } catch (err) {
       setError('토큰이 올바르지 않습니다')
     } finally {
