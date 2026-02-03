@@ -91,10 +91,7 @@ function ProfileSectionContent({
               {/* 네온 글로우 효과 */}
               <div className="absolute -inset-2 rounded-full bg-[--color-neon-cyan-500] opacity-30 blur-2xl" />
 
-              <Avatar
-                size="lg"
-                className="relative size-24 border-2 border-[--color-neon-cyan-500] shadow-[0_0_20px_var(--color-neon-cyan-500)] ring-4 ring-[--color-neon-cyan-500]/20 md:size-32"
-              >
+              <Avatar className="relative size-20 border-2 border-[--color-neon-cyan-500] shadow-[0_0_20px_var(--color-neon-cyan-500)] ring-4 ring-[--color-neon-cyan-500]/20 md:size-24">
                 <AvatarImage
                   src={profile.profile_image_url || undefined}
                   alt={profile.name}
@@ -247,7 +244,7 @@ function ProfileSectionSkeleton() {
       <div className="flex flex-col items-center gap-6 md:flex-row md:items-start md:gap-8">
         {/* 프로필 이미지 스켈레톤 */}
         <div className="shrink-0">
-          <Skeleton className="size-24 rounded-full border-2 border-[--color-neon-cyan-700] bg-[--color-black-surface] md:size-32" />
+          <Skeleton className="size-20 rounded-full border-2 border-[--color-neon-cyan-700] bg-[--color-black-surface] md:size-24" />
         </div>
 
         {/* 텍스트 및 버튼 스켈레톤 */}

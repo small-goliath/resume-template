@@ -10,7 +10,7 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-  title: '사이버펑크 포트폴리오 | Cyberpunk Developer',
+  title: '사이버펑크 포트폴리오',
   description: '사이버펑크 스타일의 개발자 포트폴리오. 네온이 빛나는 개발자의 세계.',
   keywords: [
     '개발자',
@@ -20,6 +20,9 @@ export const metadata: Metadata = {
     'cyberpunk',
     'neon',
   ],
+  icons: {
+    icon: 'https://avatars.githubusercontent.com/u/20651538?v=4',
+  },
 }
 
 export default function RootLayout({
