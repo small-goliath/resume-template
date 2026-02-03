@@ -11,7 +11,7 @@
  * - 반응형 디자인
  */
 
-import { Rocket, ExternalLink } from 'lucide-react'
+import { Rocket, ExternalLink, CheckCircle2, Clock } from 'lucide-react'
 import {
   Card,
   CardHeader,
@@ -106,32 +106,52 @@ interface ProjectCardProps {
 }
 
 function ProjectCard({ project }: ProjectCardProps) {
-  const statusVariant =
+  const isCompleted =
     project.status === '완료' || project.status === 'completed'
-      ? 'default'
-      : 'secondary'
 
-  const statusColor =
-    project.status === '완료' || project.status === 'completed'
-      ? 'from-green-500/10 to-emerald-500/10 border-green-500/20 dark:border-emerald-500/20'
-      : 'from-blue-500/10 to-cyan-500/10 border-blue-500/20 dark:border-cyan-500/20'
+  const statusConfig = isCompleted
+    ? {
+        icon: CheckCircle2,
+        bgColor:
+          'from-green-500/30 to-emerald-500/30 border-green-500/50 dark:border-emerald-500/50',
+        textColor: 'from-green-600 to-emerald-600 dark:from-green-400 dark:to-emerald-400',
+        iconColor: 'text-green-600 dark:text-green-400',
+        shadowColor: 'shadow-green-500/20 dark:shadow-emerald-500/20',
+      }
+    : {
+        icon: Clock,
+        bgColor:
+          'from-blue-500/30 to-cyan-500/30 border-blue-500/50 dark:border-cyan-500/50',
+        textColor: 'from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400',
+        iconColor: 'text-blue-600 dark:text-blue-400',
+        shadowColor: 'shadow-blue-500/20 dark:shadow-cyan-500/20',
+      }
+
+  const StatusIcon = statusConfig.icon
 
   return (
     <Card
       variant="neon-border"
-      className="group flex h-full flex-col transition-all duration-300 hover:border-purple-500/30 hover:shadow-lg hover:shadow-purple-500/5 dark:hover:border-purple-400/30"
+      className="group relative flex h-full flex-col transition-all duration-300 hover:border-purple-500/30 hover:shadow-lg hover:shadow-purple-500/5 dark:hover:border-purple-400/30"
     >
-      <CardHeader className="space-y-3">
-        {/* 상태 배지 */}
-        <div>
-          <Badge
-            variant={statusVariant}
-            className={`border bg-gradient-to-r font-semibold backdrop-blur-sm ${statusColor}`}
-          >
-            {project.status}
-          </Badge>
-        </div>
+      {/* 상태 배지 - 우상단 절대 위치 */}
+      <div className="absolute top-4 right-4 z-10">
+        <Badge
+          variant="secondary"
+          className={`border-2 bg-gradient-to-r px-3 py-1.5 font-bold shadow-lg backdrop-blur-md transition-all duration-300 hover:scale-105 ${statusConfig.bgColor} ${statusConfig.shadowColor}`}
+        >
+          <div className="flex items-center gap-1.5">
+            <StatusIcon className={`size-3.5 ${statusConfig.iconColor}`} />
+            <span
+              className={`bg-gradient-to-r bg-clip-text text-transparent ${statusConfig.textColor}`}
+            >
+              {project.status}
+            </span>
+          </div>
+        </Badge>
+      </div>
 
+      <CardHeader className="space-y-3 pr-24">
         {/* 프로젝트명 */}
         <CardTitle className="flex items-start gap-2 text-lg">
           <Rocket className="mt-1 size-4 shrink-0 text-purple-500 dark:text-purple-400" />

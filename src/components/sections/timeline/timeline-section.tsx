@@ -128,13 +128,15 @@ function TimelineItem({ item, isLast }: TimelineItemProps) {
 
       {/* 오른쪽: 컨텐츠 카드 */}
       <div className="flex-1 pb-6">
-        {/* 연도 Badge */}
+        {/* 연도 Badge - 개선된 가독성 */}
         <div className="mb-3">
           <Badge
             variant="secondary"
-            className="border border-blue-500/20 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 font-mono text-xs font-semibold backdrop-blur-sm dark:border-cyan-500/20 dark:from-cyan-500/20 dark:to-blue-500/20"
+            className="border-2 border-blue-500/40 bg-gradient-to-r from-blue-500/30 to-cyan-500/30 px-3 py-1.5 font-mono text-base font-bold shadow-lg shadow-blue-500/20 backdrop-blur-md transition-all duration-300 hover:scale-105 hover:border-blue-500/60 hover:shadow-xl hover:shadow-blue-500/30 dark:border-cyan-500/40 dark:from-cyan-500/30 dark:to-blue-500/30 dark:shadow-cyan-500/20 dark:hover:border-cyan-500/60 dark:hover:shadow-cyan-500/30"
           >
-            {item.year}
+            <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent dark:from-cyan-400 dark:to-blue-400">
+              {item.year}
+            </span>
           </Badge>
         </div>
 

@@ -11,6 +11,7 @@ export interface Profile {
   github_url: string | null
   blog_url: string | null
   career_document_url: string | null
+  introduction: string | null
   created_at: string
   updated_at: string
 }

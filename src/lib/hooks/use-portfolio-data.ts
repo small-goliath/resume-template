@@ -81,75 +81,90 @@ export function useTimeline(): UseResourceReturn<Timeline[]> {
 
 /**
  * 3. 교육사항 조회
- * GET /api/education (미구현 - 향후 API 추가 대비)
+ * GET /api/education
  */
 export function useEducation(): UseResourceReturn<Education[]> {
-  // API 미구현 시 null 전달하여 요청 비활성화
-  return useResource<Education[]>(null)
+  return useResource<Education[]>('/education')
 }
 
 /**
  * 4. 기술 역량 조회
- * GET /api/skills (미구현 - 향후 API 추가 대비)
+ * GET /api/skills
  */
 export function useSkills(): UseResourceReturn<Skill[]> {
-  return useResource<Skill[]>(null)
+  return useResource<Skill[]>('/skills')
 }
 
 /**
  * 5. 동료평가 이미지 조회
- * GET /api/peer-reviews (미구현 - 향후 API 추가 대비)
+ * GET /api/peer-reviews
  */
 export function usePeerReviews(): UseResourceReturn<PeerReview[]> {
-  return useResource<PeerReview[]>(null)
+  return useResource<PeerReview[]>('/peer-reviews')
 }
 
 /**
  * 6. 사이드프로젝트 조회
- * GET /api/side-projects (미구함 - 향후 API 추가 대비)
+ * GET /api/side-projects (deprecated - use useProjects)
  */
 export function useSideProjects(): UseResourceReturn<SideProject[]> {
-  return useResource<SideProject[]>(null)
+  return useResource<SideProject[]>('/projects')
+}
+
+/**
+ * 6-1. 프로젝트 조회 (alias for useSideProjects)
+ * GET /api/projects
+ */
+export function useProjects(): UseResourceReturn<SideProject[]> {
+  return useResource<SideProject[]>('/projects')
 }
 
 /**
  * 7. 수상 내역 조회
- * GET /api/awards (미구현 - 향후 API 추가 대비)
+ * GET /api/awards
  */
 export function useAwards(): UseResourceReturn<Award[]> {
-  return useResource<Award[]>(null)
+  return useResource<Award[]>('/awards')
 }
 
 /**
  * 8. 인턴십 조회
- * GET /api/internships (미구현 - 향후 API 추가 대비)
+ * GET /api/internships
  */
 export function useInternships(): UseResourceReturn<Internship[]> {
-  return useResource<Internship[]>(null)
+  return useResource<Internship[]>('/internships')
 }
 
 /**
  * 9. 연구활동 조회
- * GET /api/research (미구현 - 향후 API 추가 대비)
+ * GET /api/research
  */
 export function useResearch(): UseResourceReturn<Research[]> {
-  return useResource<Research[]>(null)
+  return useResource<Research[]>('/research')
 }
 
 /**
  * 10. 봉사활동 조회
- * GET /api/volunteer (미구현 - 향후 API 추가 대비)
+ * GET /api/volunteer
  */
 export function useVolunteer(): UseResourceReturn<Volunteer[]> {
-  return useResource<Volunteer[]>(null)
+  return useResource<Volunteer[]>('/volunteer')
 }
 
 /**
  * 11. 대외활동 조회
- * GET /api/external-activities (미구현 - 향후 API 추가 대비)
+ * GET /api/external-activities (deprecated - use useActivities)
  */
 export function useExternalActivities(): UseResourceReturn<ExternalActivity[]> {
-  return useResource<ExternalActivity[]>(null)
+  return useResource<ExternalActivity[]>('/activities')
+}
+
+/**
+ * 11-1. 대외활동 조회 (alias for useExternalActivities)
+ * GET /api/activities
+ */
+export function useActivities(): UseResourceReturn<ExternalActivity[]> {
+  return useResource<ExternalActivity[]>('/activities')
 }
 
 /**

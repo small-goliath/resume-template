@@ -188,6 +188,31 @@ function ProfileSectionContent({
                 </Button>
               )}
             </div>
+
+            {/* 소개 글 영역 */}
+            {profile.introduction && (
+              <div className="mt-4 w-full">
+                <div className="rounded-lg border border-[--color-neon-cyan-700]/50 bg-[--color-black-surface]/50 p-4 backdrop-blur-sm md:p-6">
+                  <div className="space-y-2 text-sm leading-relaxed text-[--color-text-secondary] md:text-base">
+                    {profile.introduction.split('\n').map((line, index) => (
+                      <p
+                        key={index}
+                        className="flex items-start gap-2 transition-colors hover:text-[--color-neon-cyan-400]"
+                      >
+                        {line.trim().startsWith('•') ? (
+                          <>
+                            <span className="mt-1.5 inline-block size-1.5 shrink-0 rounded-full bg-[--color-neon-cyan-500] shadow-[0_0_5px_var(--color-neon-cyan-500)]" />
+                            <span className="flex-1">{line.trim().substring(1).trim()}</span>
+                          </>
+                        ) : (
+                          <span className="flex-1">{line}</span>
+                        )}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

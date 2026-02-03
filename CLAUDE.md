@@ -178,6 +178,7 @@ response.set_cookie(
 **핵심 테이블:**
 
 - `profile` - 프로필 정보 (단일 레코드)
+  - 2026-02-03: `introduction` 필드 추가 (간략한 자기소개 글)
 - `timeline` - 경력 타임라인 (`sort_order`로 정렬)
 - `education` - 교육사항
 - `skills` - 기술 역량 (카테고리별)
@@ -337,15 +338,30 @@ export function ProfileSection() {
 
 - 스타일: `new-york`
 - 컴포넌트 위치: `src/components/ui/`
-- 설치된 컴포넌트 (17개):
+- 설치된 컴포넌트 (18개):
   - 기본: Button, Card, Avatar, Badge, Separator, Skeleton
   - 폼: Input, Textarea, Label, Checkbox, Radio Group, Select, Switch
   - 네비게이션: Navigation Menu, Dropdown Menu
+  - 피드백: Sonner (Toast 알림)
   - 기타: Progress, Dialog
 - 커스터마이징:
   - Button: gradient, glass, neon, sleek variants 추가
   - Card: elevated, glass, outline, minimal, neon, interactive variants 추가
+  - Badge: 그라디언트 텍스트 효과, 네온 글로우, 아이콘 지원
   - 개발자스러운 감성의 모던 디자인 적용
+
+### 8. Next.js Image Configuration
+
+**외부 이미지 도메인 설정:**
+
+`next.config.ts`의 `images.remotePatterns`에 허용된 도메인:
+- `avatars.githubusercontent.com` - GitHub 아바타
+- `**.imgur.com` - Imgur 이미지 호스팅
+- `images.unsplash.com` - Unsplash 이미지
+- `res.cloudinary.com` - Cloudinary CDN
+- `i.ibb.co` - ImgBB 호스팅
+- `**.vercel.app` - Vercel 배포 도메인
+- `cdn.torii.kro.kr` - 커스텀 CDN (동료평가 이미지 등)
 
 ## Project Status
 
@@ -354,33 +370,47 @@ export function ProfileSection() {
 **완료된 작업:**
 - ✅ FastAPI 백엔드 구현 완료 (`api/index.py`)
 - ✅ 데이터베이스 스키마 설계 완료 (`docs/database/scheme.sql`)
+  - 2026-02-03: `profile.introduction` 필드 추가 (간략한 자기소개)
 - ✅ PRD 및 README 문서 작성 완료
 - ✅ Next.js 16 App Router 기본 구조 생성
-- ✅ shadcn/ui 컴포넌트 시스템 구축 (17개 컴포넌트)
+- ✅ shadcn/ui 컴포넌트 시스템 구축 (18개 컴포넌트)
   - Button, Card, Avatar 등 기본 컴포넌트 커스터마이징
   - gradient, glass, neon, sleek 등 개발자스러운 variant 추가
+  - Sonner (Toast 알림) 추가
 - ✅ API 클라이언트 및 데이터 페칭 레이어 구현
   - SWR 기반 훅 시스템 (11개 리소스)
   - 조건부 페칭 패턴 (null endpoint)
-- ✅ 포트폴리오 섹션 구현 (6/11)
-  - Profile Section (모던 그라디언트 디자인)
-  - Timeline Section (수직 타임라인)
+- ✅ 포트폴리오 섹션 구현 완료 (11/11)
+  - Profile Section (모던 그라디언트 디자인 + 소개 글)
+  - Timeline Section (수직 타임라인 + 강화된 연도 Badge)
   - Education Section (2열 그리드)
   - Skills Section (카테고리별 뱃지)
+  - Peer Reviews Section (이미지 갤러리 + Lightbox)
+  - Projects Section (2열 그리드 + 강화된 상태 Badge)
+  - Awards Section (인증서 이미지 표시)
+  - Internships Section (강화된 기간 Badge)
+  - Research Section (학술 프로젝트)
+  - Volunteer Section (봉사활동)
+  - Activities Section (대외활동)
   - Section Navigation (11개 섹션 탭)
-
-**진행 중:**
-- 🚧 동료평가 이미지 갤러리 (Task 9)
-- 🚧 추가 포트폴리오 섹션 (Tasks 10-11)
-  - Projects, Awards, Internships
-  - Research, Volunteer, Activities
-- 🚧 로컬 개발 환경 통합 (Task 12)
+- ✅ UI/UX 가독성 개선
+  - Timeline 연도: 그라디언트 텍스트 + 네온 글로우 + 크기 증가
+  - Projects 상태: 우상단 배치 + 아이콘 (Clock/CheckCircle2) + 그라디언트
+  - Internships 기간: 그라디언트 텍스트 + Calendar 아이콘 강화
+- ✅ 관리자 페이지 구현 완료
+  - 프로필 편집 (소개 글 Textarea + 실시간 미리보기)
+  - Timeline, Education, Skills 관리
+  - Peer Reviews, Projects, Awards 관리
+  - Internships, Research, Volunteer, Activities 관리
+  - Settings (섹션 표시/숨김 제어)
 
 **다음 단계:**
-1. 이미지 갤러리 구현 (yet-another-react-lightbox)
-2. 나머지 포트폴리오 섹션 구현
-3. 관리자 페이지 구현
-4. 로컬/프로덕션 환경 통합 테스트
+1. ✅ ~~이미지 갤러리 구현 (yet-another-react-lightbox)~~ - 완료
+2. ✅ ~~나머지 포트폴리오 섹션 구현~~ - 완료
+3. ✅ ~~관리자 페이지 구현~~ - 완료
+4. 🚧 로컬/프로덕션 환경 통합 테스트
+5. 🆕 Supabase 마이그레이션 실행 (`profile.introduction` 필드)
+6. 🆕 실제 데이터 입력 및 QA
 
 ## Key Technical Decisions
 
@@ -466,6 +496,30 @@ curl https://your-app.vercel.app/api/health
 1. `.env.local`에 `ADMIN_SECRET_TOKEN` 설정 확인
 2. `/login`에서 정확한 토큰 입력
 3. 브라우저 개발자 도구에서 쿠키 확인
+
+### 외부 이미지 표시 오류
+
+Next.js Image 컴포넌트 오류:
+```
+Invalid src prop (...) on `next/image`, hostname "..." is not configured
+```
+
+**해결 방법:**
+1. `next.config.ts`의 `images.remotePatterns`에 도메인 추가
+2. 개발 서버 재시작 필요
+
+### 프로필 소개 글이 표시되지 않음
+
+**원인:** 데이터베이스에 `introduction` 필드가 없음
+
+**해결 방법:**
+1. Supabase 대시보드 → SQL Editor
+2. `docs/database/migration-add-introduction.sql` 실행:
+   ```sql
+   ALTER TABLE profile
+   ADD COLUMN IF NOT EXISTS introduction TEXT;
+   ```
+3. 관리자 페이지에서 소개 글 입력
 
 ### 빌드 오류
 

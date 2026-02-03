@@ -30,6 +30,10 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: '**.vercel.app',
       },
+      {
+        protocol: 'https',
+        hostname: 'cdn.torii.kro.kr',
+      },
     ],
   },
   experimental: {

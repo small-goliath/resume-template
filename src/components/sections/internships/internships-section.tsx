@@ -129,14 +129,16 @@ function InternshipCard({ internship }: InternshipCardProps) {
       className="transition-all duration-300 hover:border-indigo-500/30 hover:shadow-lg hover:shadow-indigo-500/5 dark:hover:border-indigo-400/30"
     >
       <CardHeader className="space-y-3">
-        {/* 기간 Badge */}
+        {/* 기간 Badge - 개선된 가독성 */}
         <div>
           <Badge
             variant="secondary"
-            className="border border-indigo-500/20 bg-gradient-to-r from-indigo-500/10 to-blue-500/10 font-mono text-xs font-semibold backdrop-blur-sm dark:border-indigo-500/20 dark:from-indigo-500/20 dark:to-blue-500/20"
+            className="border-2 border-indigo-500/40 bg-gradient-to-r from-indigo-500/30 to-blue-500/30 px-3 py-1.5 font-mono text-base font-bold shadow-lg shadow-indigo-500/20 backdrop-blur-md transition-all duration-300 hover:scale-105 hover:border-indigo-500/60 hover:shadow-xl hover:shadow-indigo-500/30 dark:border-indigo-500/40 dark:from-indigo-500/30 dark:to-blue-500/30 dark:shadow-indigo-500/20 dark:hover:border-indigo-500/60 dark:hover:shadow-indigo-500/30"
           >
-            <Calendar className="mr-1.5 size-3" />
-            {period}
+            <Calendar className="mr-1.5 size-3.5 text-indigo-600 dark:text-indigo-400" />
+            <span className="bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent dark:from-indigo-400 dark:to-blue-400">
+              {period}
+            </span>
           </Badge>
         </div>
 
