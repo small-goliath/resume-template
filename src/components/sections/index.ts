@@ -34,3 +34,6 @@ export { EducationSection } from './education'
 
 // 역량 섹션 컴포넌트
 export { SkillsSection } from './skills'
+
+// 동료평가 섹션 컴포넌트
+export { PeerReviewsSection } from './peer-reviews'
