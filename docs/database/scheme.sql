@@ -185,6 +185,22 @@ CREATE TABLE IF NOT EXISTS section_visibility (
 );
 
 -- ===================================
+-- 13. DailyRoutine (일일 루틴)
+-- ===================================
+CREATE TABLE IF NOT EXISTS daily_routine (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  profile_id UUID REFERENCES profile(id) ON DELETE CASCADE,
+  start_hour INTEGER NOT NULL CHECK (start_hour >= 0 AND start_hour <= 23),
+  end_hour INTEGER NOT NULL CHECK (end_hour >= 0 AND end_hour <= 23),
+  label TEXT NOT NULL,
+  color TEXT NOT NULL CHECK (color IN ('neon-cyan', 'neon-magenta', 'neon-purple', 'neon-green', 'neon-orange')),
+  intensity TEXT NOT NULL CHECK (intensity IN ('dim', 'medium', 'bright')),
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- ===================================
 -- 인덱스 생성 (성능 최적화)
 -- ===================================
 CREATE INDEX IF NOT EXISTS idx_timeline_sort ON timeline(sort_order);
@@ -197,6 +213,8 @@ CREATE INDEX IF NOT EXISTS idx_internship_start ON internship(start_date DESC, s
 CREATE INDEX IF NOT EXISTS idx_research_year ON research(year DESC, sort_order);
 CREATE INDEX IF NOT EXISTS idx_peer_review_year ON peer_review(year DESC, sort_order);
 CREATE INDEX IF NOT EXISTS idx_side_project_year ON side_project(year DESC, sort_order);
+CREATE INDEX IF NOT EXISTS idx_daily_routine_sort ON daily_routine(sort_order);
+CREATE INDEX IF NOT EXISTS idx_daily_routine_profile ON daily_routine(profile_id);
 
 -- ===================================
 -- Row Level Security (RLS) 설정
@@ -214,6 +232,7 @@ ALTER TABLE research ENABLE ROW LEVEL SECURITY;
 ALTER TABLE peer_review ENABLE ROW LEVEL SECURITY;
 ALTER TABLE side_project ENABLE ROW LEVEL SECURITY;
 ALTER TABLE section_visibility ENABLE ROW LEVEL SECURITY;
+ALTER TABLE daily_routine ENABLE ROW LEVEL SECURITY;
 
 -- 모든 테이블에 대해 공개 읽기 정책 생성
 CREATE POLICY "Enable read access for all users" ON profile FOR SELECT USING (true);
@@ -228,6 +247,7 @@ CREATE POLICY "Enable read access for all users" ON research FOR SELECT USING (t
 CREATE POLICY "Enable read access for all users" ON peer_review FOR SELECT USING (true);
 CREATE POLICY "Enable read access for all users" ON side_project FOR SELECT USING (true);
 CREATE POLICY "Enable read access for all users" ON section_visibility FOR SELECT USING (true);
+CREATE POLICY "Enable read access for all users" ON daily_routine FOR SELECT USING (true);
 
 -- ===================================
 -- 업데이트 트리거 함수
@@ -253,3 +273,4 @@ CREATE TRIGGER update_research_updated_at BEFORE UPDATE ON research FOR EACH ROW
 CREATE TRIGGER update_peer_review_updated_at BEFORE UPDATE ON peer_review FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_side_project_updated_at BEFORE UPDATE ON side_project FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_section_visibility_updated_at BEFORE UPDATE ON section_visibility FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+CREATE TRIGGER update_daily_routine_updated_at BEFORE UPDATE ON daily_routine FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
