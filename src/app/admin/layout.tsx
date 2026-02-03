@@ -1,4 +1,6 @@
 import type { Metadata } from 'next'
+import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
 import { AdminSidebar } from '@/components/admin/admin-sidebar'
 import { Toaster } from '@/components/ui/sonner'
 
@@ -7,11 +9,20 @@ export const metadata: Metadata = {
   description: '포트폴리오 관리 페이지',
 }
 
-export default function AdminLayout({
+export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  // 쿠키에서 토큰 가져오기
+  const cookieStore = await cookies()
+  const adminToken = cookieStore.get('admin_token')?.value
+  const expectedToken = process.env.ADMIN_SECRET_TOKEN
+
+  // 토큰 검증
+  if (!adminToken || adminToken !== expectedToken) {
+    redirect('/login')
+  }
   return (
     <div className="min-h-screen bg-[--color-black-base]">
       {/* 사이버펑크 그리드 배경 */}
