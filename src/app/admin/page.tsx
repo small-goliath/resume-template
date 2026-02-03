@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button'
 import {
   useProfile,
   useTimeline,
+  useDailyRoutine,
   useEducation,
   useSkills,
   usePeerReviews,
@@ -26,6 +27,7 @@ import {
 import {
   User,
   Clock,
+  CalendarClock,
   GraduationCap,
   Code2,
   Users,
@@ -103,6 +105,7 @@ export default function AdminDashboardPage() {
   // 모든 데이터 훅
   const { data: profile, isLoading: profileLoading } = useProfile()
   const { data: timeline, isLoading: timelineLoading } = useTimeline()
+  const { data: dailyRoutine, isLoading: dailyRoutineLoading } = useDailyRoutine()
   const { data: education, isLoading: educationLoading } = useEducation()
   const { data: skills, isLoading: skillsLoading } = useSkills()
   const { data: peerReviews, isLoading: peerReviewsLoading } = usePeerReviews()
@@ -128,6 +131,13 @@ export default function AdminDashboardPage() {
       icon: Clock,
       href: '/admin/timeline',
       isLoading: timelineLoading,
+    },
+    {
+      title: '일일 루틴',
+      count: dailyRoutine?.length || 0,
+      icon: CalendarClock,
+      href: '/admin/daily-routine',
+      isLoading: dailyRoutineLoading,
     },
     {
       title: '교육',
@@ -292,6 +302,17 @@ export default function AdminDashboardPage() {
             <Link href="/admin/timeline">
               <Clock className="size-6" />
               <span>타임라인 관리</span>
+            </Link>
+          </Button>
+          <Button
+            variant="neon"
+            size="lg"
+            asChild
+            className="h-auto flex-col gap-2 py-4"
+          >
+            <Link href="/admin/daily-routine">
+              <CalendarClock className="size-6" />
+              <span>루틴 관리</span>
             </Link>
           </Button>
           <Button
