@@ -178,16 +178,251 @@
         "status": "done",
         "subtasks": [],
         "updatedAt": "2026-02-03T02:05:50.011Z"
+      },
+      {
+        "id": "13",
+        "title": "Supabase PostgreSQL 데이터베이스 스키마 및 시드 데이터 구축",
+        "description": "포트폴리오 웹사이트의 모든 데이터를 저장할 Supabase PostgreSQL 데이터베이스 스키마를 생성하고 초기 시드 데이터를 구축합니다.",
+        "details": "1. Supabase 프로젝트 생성 및 설정\n2. 11개 테이블 스키마 생성 (Profile, Timeline, Education, Skill, PeerReview, SideProject, Award, Internship, Research, Volunteer, ExtracurricularActivity, DailyRoutine)\n3. 각 테이블의 관계 설정 (Foreign Key 제약조건)\n4. 시드 데이터 작성 및 삽입\n5. 데이터베이스 연결 테스트\n\n-- 예시 스키마 (Profile 테이블)\nCREATE TABLE profiles (\n  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),\n  name TEXT NOT NULL,\n  mbti TEXT,\n  profile_image_url TEXT,\n  github_url TEXT,\n  blog_url TEXT,\n  resume_url TEXT,\n  created_at TIMESTAMP DEFAULT NOW()\n);\n\n-- DailyRoutine 테이블 (24시간 루틴 시계용)\nCREATE TABLE daily_routines (\n  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),\n  profile_id UUID REFERENCES profiles(id),\n  start_hour INTEGER CHECK (start_hour >= 0 AND start_hour <= 23),\n  end_hour INTEGER CHECK (end_hour >= 0 AND end_hour <= 23),\n  label TEXT NOT NULL,\n  color TEXT CHECK (color IN ('neon-cyan', 'neon-magenta', 'neon-purple', 'neon-green', 'neon-orange')),\n  intensity TEXT CHECK (intensity IN ('dim', 'medium', 'bright')),\n  sort_order INTEGER,\n  created_at TIMESTAMP DEFAULT NOW()\n);",
+        "testStrategy": "1. Supabase 대시보드에서 테이블 생성 확인\n2. 시드 데이터 삽입 후 SQL 쿼리로 데이터 조회 테스트\n3. 외래키 제약조건 테스트 (잘못된 profile_id 삽입 시 오류 발생 확인)\n4. 각 테이블별 CRUD 작업 테스트\n5. 데이터 타입 및 제약조건 검증",
+        "priority": "high",
+        "dependencies": [],
+        "status": "cancelled",
+        "subtasks": [],
+        "updatedAt": "2026-02-03T07:54:09.818Z"
+      },
+      {
+        "id": "14",
+        "title": "FastAPI 백엔드 서버 및 API 엔드포인트 구축",
+        "description": "Python FastAPI를 사용하여 포트폴리오 데이터를 제공하는 RESTful API 서버를 구축하고 모든 섹션의 데이터 조회 엔드포인트를 개발합니다.",
+        "details": "1. FastAPI 프로젝트 구조 설정\n2. Supabase PostgreSQL 연결 설정 (asyncpg 또는 psycopg2 사용)\n3. 데이터 모델 정의 (Pydantic BaseModel)\n4. API 엔드포인트 구현:\n   - GET /api/profile - 프로필 정보 조회\n   - GET /api/timeline - 타임라인 데이터 조회\n   - GET /api/education - 교육사항 조회\n   - GET /api/skills - 역량 정보 조회\n   - GET /api/peer-reviews - 동료평가 이미지 조회\n   - GET /api/side-projects - 사이드프로젝트 조회\n   - GET /api/awards - 수상내역 조회\n   - GET /api/internships - 인턴십 조회\n   - GET /api/research - 연구활동 조회\n   - GET /api/volunteer - 봉사활동 조회\n   - GET /api/extracurricular - 대외활동 조회\n   - GET /api/daily-routine - 일일 루틴 조회\n5. CORS 설정 (Next.js와 통신)\n6. 환경변수 설정 (SUPABASE_URL, SUPABASE_KEY)\n\n# 예시 코드\nfrom fastapi import FastAPI, HTTPException\nfrom pydantic import BaseModel\nimport asyncpg\n\napp = FastAPI()\n\nclass ProfileResponse(BaseModel):\n    id: str\n    name: str\n    mbti: str\n    profile_image_url: str\n    github_url: str\n    blog_url: str\n    resume_url: str\n\n@app.get(\"/api/profile\", response_model=ProfileResponse)\nasync def get_profile():\n    # PostgreSQL 쿼리 실행\n    pass",
+        "testStrategy": "1. FastAPI 서버 실행 테스트 (uvicorn main:app --reload)\n2. Swagger UI 접속 확인 (http://localhost:8000/docs)\n3. 각 엔드포인트별 GET 요청 테스트\n4. 데이터베이스 연결 및 쿼리 실행 확인\n5. CORS 헤더 설정 확인\n6. 에러 핸들링 테스트 (존재하지 않는 데이터 요청)\n7. Postman 또는 curl을 사용한 API 응답 검증",
+        "priority": "high",
+        "dependencies": [
+          "13"
+        ],
+        "status": "cancelled",
+        "subtasks": [],
+        "updatedAt": "2026-02-03T07:54:09.826Z"
+      },
+      {
+        "id": "15",
+        "title": "Next.js 16 프로젝트 초기 설정 및 개발 환경 구성",
+        "description": "Next.js 16 App Router, TypeScript, TailwindCSS v4, shadcn/ui를 사용한 프론트엔드 프로젝트를 초기 설정하고 FastAPI와 동시 실행되는 개발 환경을 구성합니다.",
+        "details": "1. Next.js 16 프로젝트 생성 (App Router 사용)\n   npx create-next-app@latest portfolio --typescript --tailwind --app\n2. TailwindCSS v4 설정 (설정파일 없는 새로운 엔진)\n3. shadcn/ui 설치 및 초기 설정\n   npx shadcn@latest init\n4. 필수 의존성 설치:\n   - axios (API 통신)\n   - swr (서버 상태 관리)\n   - lucide-react (아이콘)\n   - yet-another-react-lightbox (이미지 갤러리)\n   - concurrently (개발 서버 동시 실행)\n5. package.json scripts 설정:\n   \"dev\": \"concurrently \\\"next dev\\\" \\\"uvicorn api.main:app --reload --port 8000\\\"\"\n6. 환경변수 설정 (.env.local)\n   NEXT_PUBLIC_API_URL=http://localhost:8000\n7. 기본 폴더 구조 생성:\n   - app/ (App Router 페이지)\n   - components/ (재사용 컴포넌트)\n   - lib/ (유틸리티 함수)\n   - types/ (TypeScript 타입 정의)\n   - api/ (FastAPI 백엔드 코드)\n8. TypeScript 설정 최적화\n9. ESLint, Prettier 설정",
+        "testStrategy": "1. npm run dev 실행 시 Next.js와 FastAPI 동시 실행 확인\n2. http://localhost:3000 접속하여 Next.js 기본 페이지 확인\n3. http://localhost:8000/docs 접속하여 FastAPI Swagger UI 확인\n4. TailwindCSS 클래스 적용 테스트\n5. shadcn/ui 컴포넌트 import 테스트\n6. TypeScript 컴파일 오류 없음 확인\n7. 환경변수 접근 테스트 (process.env.NEXT_PUBLIC_API_URL)",
+        "priority": "high",
+        "dependencies": [],
+        "status": "cancelled",
+        "subtasks": [],
+        "updatedAt": "2026-02-03T07:54:09.832Z"
+      },
+      {
+        "id": "16",
+        "title": "프로필 영역 및 기본 레이아웃 컴포넌트 개발",
+        "description": "메인 포트폴리오 페이지의 프로필 영역을 개발하고 전체 페이지의 기본 레이아웃을 구성합니다. 성명, MBTI, 프로필 이미지, 외부 링크를 표시합니다.",
+        "details": "1. 메인 페이지 레이아웃 컴포넌트 생성 (app/page.tsx)\n2. ProfileSection 컴포넌트 개발:\n   - 프로필 이미지 표시 (Next.js Image 컴포넌트 사용)\n   - 성명 및 MBTI 표시\n   - 외부 링크 3개 (Github, 블로그, 경력기술서) - 새창 열기\n   - 반응형 디자인 적용\n3. API 통신 로직 구현:\n   - SWR을 사용한 프로필 데이터 페칭\n   - 로딩 상태 및 에러 처리\n4. TypeScript 타입 정의 (types/profile.ts)\n5. shadcn/ui 컴포넌트 활용 (Button, Card 등)\n6. TailwindCSS를 사용한 스타일링\n\n// 예시 컴포넌트 구조\ninterface ProfileData {\n  id: string;\n  name: string;\n  mbti: string;\n  profile_image_url: string;\n  github_url: string;\n  blog_url: string;\n  resume_url: string;\n}\n\nexport default function ProfileSection() {\n  const { data: profile, error, isLoading } = useSWR<ProfileData>(\n    '/api/profile',\n    fetcher\n  );\n\n  if (isLoading) return <ProfileSkeleton />;\n  if (error) return <ErrorMessage />;\n\n  return (\n    <Card className=\"p-6\">\n      <div className=\"flex flex-col md:flex-row items-center gap-6\">\n        <Image\n          src={profile.profile_image_url}\n          alt={profile.name}\n          width={120}\n          height={120}\n          className=\"rounded-full\"\n        />\n        <div className=\"text-center md:text-left\">\n          <h1 className=\"text-2xl font-bold\">{profile.name}</h1>\n          <p className=\"text-muted-foreground\">{profile.mbti}</p>\n          <div className=\"flex gap-4 mt-4\">\n            <Button asChild variant=\"outline\">\n              <a href={profile.github_url} target=\"_blank\" rel=\"noopener noreferrer\">\n                Github\n              </a>\n            </Button>\n            {/* 블로그, 경력기술서 링크 */}\n          </div>\n        </div>\n      </div>\n    </Card>\n  );\n}",
+        "testStrategy": "1. 프로필 데이터 API 호출 및 렌더링 확인\n2. 이미지 로딩 및 최적화 테스트\n3. 외부 링크 클릭 시 새창 열기 확인\n4. 반응형 디자인 테스트 (모바일, 태블릿, 데스크톱)\n5. 로딩 상태 및 에러 상태 UI 확인\n6. 접근성 테스트 (alt 텍스트, 키보드 네비게이션)\n7. TypeScript 타입 안전성 확인",
+        "priority": "medium",
+        "dependencies": [
+          "14",
+          "15"
+        ],
+        "status": "cancelled",
+        "subtasks": [],
+        "updatedAt": "2026-02-03T07:54:09.841Z"
+      },
+      {
+        "id": "17",
+        "title": "24시간 루틴 시계 컴포넌트 개발",
+        "description": "KST 기준 실시간 24시간 아날로그 시계와 시간대별 루틴 표시 기능을 가진 DailyRoutineClock 컴포넌트를 개발합니다.",
+        "details": "1. DailyRoutineClock 컴포넌트 생성 (components/DailyRoutineClock.tsx)\n2. SVG 기반 24시간 시계 렌더링:\n   - 원형 시계 베이스 (모바일 280px, 데스크톱 400px)\n   - 24시간 눈금 표시 (0-23)\n   - 시침, 분침 구현 (KST 기준 실시간 업데이트)\n   - 중앙에 \"small-goliath\" 텍스트 고정 표시\n3. 시간대별 루틴 호(Arc) 렌더링:\n   - daily_routine 테이블 데이터 기반\n   - 시작/종료 시간에 따른 호 각도 계산\n   - 네온 색상 적용 (neon-cyan, neon-magenta, neon-purple, neon-green, neon-orange)\n   - 글로우 강도 적용 (dim, medium, bright)\n4. 루틴 범례 컴포넌트:\n   - 시간대별 라벨 표시\n   - 색상 인디케이터\n5. 실시간 업데이트 로직:\n   - useEffect + setInterval로 1분마다 시침/분침 업데이트\n   - KST 시간 계산 (new Date().toLocaleString(\"en-US\", {timeZone: \"Asia/Seoul\"}))\n6. 반응형 디자인 적용\n\n// 예시 구현\ninterface DailyRoutine {\n  id: string;\n  start_hour: number;\n  end_hour: number;\n  label: string;\n  color: string;\n  intensity: string;\n}\n\nconst DailyRoutineClock: React.FC = () => {\n  const [currentTime, setCurrentTime] = useState(new Date());\n  const { data: routines } = useSWR<DailyRoutine[]>('/api/daily-routine', fetcher);\n\n  useEffect(() => {\n    const timer = setInterval(() => {\n      const kstTime = new Date().toLocaleString(\"en-US\", {timeZone: \"Asia/Seoul\"});\n      setCurrentTime(new Date(kstTime));\n    }, 60000);\n    return () => clearInterval(timer);\n  }, []);\n\n  const hourAngle = (currentTime.getHours() % 24) * 15; // 24시간 = 360도\n  const minuteAngle = currentTime.getMinutes() * 6; // 60분 = 360도\n\n  return (\n    <div className=\"flex flex-col items-center gap-4\">\n      <svg width={isMobile ? 280 : 400} height={isMobile ? 280 : 400}>\n        {/* 시간대별 루틴 호 렌더링 */}\n        {routines?.map(routine => (\n          <path\n            key={routine.id}\n            d={createArcPath(routine.start_hour, routine.end_hour)}\n            className={`fill-none stroke-${routine.color} stroke-[8] ${routine.intensity}`}\n          />\n        ))}\n        {/* 시침, 분침 */}\n        <line\n          x1=\"50%\" y1=\"50%\"\n          x2={`${50 + 25 * Math.sin(hourAngle * Math.PI / 180)}%`}\n          y2={`${50 - 25 * Math.cos(hourAngle * Math.PI / 180)}%`}\n          className=\"stroke-white stroke-[4]\"\n        />\n        <text x=\"50%\" y=\"50%\" textAnchor=\"middle\" className=\"fill-white text-sm font-bold\">\n          small-goliath\n        </text>\n      </svg>\n      <RoutineLegend routines={routines} />\n    </div>\n  );\n};",
+        "testStrategy": "1. 시계 SVG 렌더링 확인 (원형, 눈금, 중앙 텍스트)\n2. 실시간 시침/분침 회전 애니메이션 테스트\n3. KST 시간 정확성 확인\n4. 루틴 데이터 기반 호(Arc) 렌더링 테스트\n5. 네온 색상 및 글로우 효과 확인\n6. 반응형 크기 조정 테스트 (280px ↔ 400px)\n7. 범례 컴포넌트 표시 확인\n8. 메모리 누수 방지 (setInterval cleanup) 테스트",
+        "priority": "medium",
+        "dependencies": [
+          "14",
+          "15"
+        ],
+        "status": "cancelled",
+        "subtasks": [],
+        "updatedAt": "2026-02-03T07:54:09.848Z"
+      },
+      {
+        "id": "18",
+        "title": "섹션 선택 UI 및 주요 섹션 컴포넌트 개발",
+        "description": "11개 섹션을 탭 또는 아코디언 형태로 선택할 수 있는 UI를 개발하고, 타임라인, 교육사항, 역량 섹션 컴포넌트를 구현합니다.",
+        "details": "1. SectionTabs 컴포넌트 개발 (shadcn/ui Tabs 사용):\n   - 11개 섹션 탭 구성\n   - 아이콘 + 텍스트 라벨\n   - 반응형 디자인 (모바일에서는 아코디언 형태)\n2. TimelineSection 컴포넌트:\n   - 연도별 타임라인 표시\n   - 회사명, 업무/역할, 이벤트 목록\n   - 시간순 정렬\n   - 세로형 타임라인 UI\n3. EducationSection 컴포넌트:\n   - 시작/종료 연도 표시\n   - 교육 기관명 및 설명\n   - 카드 형태 레이아웃\n4. SkillsSection 컴포넌트:\n   - 9개 카테고리별 기술 키워드\n   - 뱃지 형태로 키워드 표시\n   - 카테고리별 그룹핑\n5. API 통신 및 데이터 페칭:\n   - 각 섹션별 SWR 훅 사용\n   - 로딩 스켈레톤 UI\n   - 에러 처리\n\n// 예시 구현\nconst SECTIONS = [\n  { id: 'timeline', label: '타임라인', icon: Calendar },\n  { id: 'education', label: '교육사항', icon: GraduationCap },\n  { id: 'skills', label: '역량', icon: Code },\n  // ... 나머지 8개 섹션\n];\n\nexport default function PortfolioSections() {\n  const [activeSection, setActiveSection] = useState('timeline');\n\n  return (\n    <Tabs value={activeSection} onValueChange={setActiveSection}>\n      <TabsList className=\"grid grid-cols-4 lg:grid-cols-11 gap-2\">\n        {SECTIONS.map(section => (\n          <TabsTrigger key={section.id} value={section.id}>\n            <section.icon className=\"w-4 h-4 mr-2\" />\n            <span className=\"hidden sm:inline\">{section.label}</span>\n          </TabsTrigger>\n        ))}\n      </TabsList>\n      \n      <TabsContent value=\"timeline\">\n        <TimelineSection />\n      </TabsContent>\n      <TabsContent value=\"education\">\n        <EducationSection />\n      </TabsContent>\n      <TabsContent value=\"skills\">\n        <SkillsSection />\n      </TabsContent>\n      {/* 나머지 섹션들 */}\n    </Tabs>\n  );\n}",
+        "testStrategy": "1. 탭 전환 기능 테스트 (11개 섹션 간 이동)\n2. 반응형 UI 테스트 (데스크톱 탭 ↔ 모바일 아코디언)\n3. 각 섹션별 데이터 로딩 및 렌더링 확인\n4. 타임라인 시간순 정렬 확인\n5. 교육사항 카드 레이아웃 테스트\n6. 역량 키워드 뱃지 표시 및 카테고리 그룹핑 확인\n7. 로딩 스켈레톤 UI 표시 테스트\n8. 에러 상태 처리 확인\n9. 접근성 테스트 (키보드 네비게이션, ARIA 라벨)",
+        "priority": "medium",
+        "dependencies": [
+          "14",
+          "15"
+        ],
+        "status": "cancelled",
+        "subtasks": [],
+        "updatedAt": "2026-02-03T07:54:09.853Z"
+      },
+      {
+        "id": "19",
+        "title": "나머지 섹션 컴포넌트 및 고급 기능 개발",
+        "description": "동료평가 이미지 갤러리, 사이드프로젝트, 수상, 인턴십, 연구활동, 봉사활동, 대외활동 섹션을 개발하고 이미지 확대/축소 기능을 구현합니다.",
+        "details": "1. PeerReviewSection 컴포넌트:\n   - 이미지 그리드 레이아웃\n   - yet-another-react-lightbox를 사용한 이미지 갤러리\n   - 확대/축소, 네비게이션 기능\n   - 썸네일 최적화 (Next.js Image)\n2. SideProjectsSection 컴포넌트:\n   - 프로젝트명 (링크), 설명, 상태 배지\n   - 외부 링크 새창 열기\n   - 카드 그리드 레이아웃\n3. AwardsSection 컴포넌트:\n   - 수상명 (링크), 대회명, 상장 이미지\n   - 이미지 모달 뷰어\n   - 외부 링크 새창 열기\n4. InternshipSection 컴포넌트:\n   - 회사명, 업무 내용\n   - 리스트 형태 레이아웃\n5. ResearchSection 컴포넌트:\n   - 연구명 (링크), 문서 열람 버튼\n   - 외부 링크 새창 열기\n6. VolunteerSection 컴포넌트:\n   - 기관명, 봉사 내용\n   - 카드 형태 레이아웃\n7. ExtracurricularSection 컴포넌트:\n   - 기관명, 활동 내용\n   - 카드 형태 레이아웃\n8. 공통 유틸리티:\n   - 외부 링크 새창 열기 함수\n   - 이미지 최적화 설정\n   - 로딩 스켈레톤 컴포넌트\n\n// 예시 구현 (동료평가 갤러리)\nimport Lightbox from \"yet-another-react-lightbox\";\nimport \"yet-another-react-lightbox/styles.css\";\n\nconst PeerReviewSection: React.FC = () => {\n  const [lightboxOpen, setLightboxOpen] = useState(false);\n  const [currentImage, setCurrentImage] = useState(0);\n  const { data: reviews } = useSWR<PeerReview[]>('/api/peer-reviews', fetcher);\n\n  const openLightbox = (index: number) => {\n    setCurrentImage(index);\n    setLightboxOpen(true);\n  };\n\n  return (\n    <div className=\"grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4\">\n      {reviews?.map((review, index) => (\n        <div key={review.id} className=\"cursor-pointer\" onClick={() => openLightbox(index)}>\n          <Image\n            src={review.image_url}\n            alt={`동료평가 ${index + 1}`}\n            width={200}\n            height={200}\n            className=\"rounded-lg hover:scale-105 transition-transform\"\n          />\n        </div>\n      ))}\n      \n      <Lightbox\n        open={lightboxOpen}\n        close={() => setLightboxOpen(false)}\n        index={currentImage}\n        slides={reviews?.map(review => ({ src: review.image_url })) || []}\n      />\n    </div>\n  );\n};",
+        "testStrategy": "1. 동료평가 이미지 그리드 렌더링 및 갤러리 기능 테스트\n2. 이미지 확대/축소, 네비게이션 기능 확인\n3. 사이드프로젝트 외부 링크 새창 열기 테스트\n4. 수상 상장 이미지 모달 뷰어 확인\n5. 연구활동 문서 링크 새창 열기 테스트\n6. 각 섹션별 반응형 레이아웃 테스트\n7. 이미지 최적화 및 로딩 성능 확인\n8. 로딩 스켈레톤 UI 표시 테스트\n9. 접근성 테스트 (이미지 alt 텍스트, 키보드 네비게이션)",
+        "priority": "medium",
+        "dependencies": [
+          "18"
+        ],
+        "status": "cancelled",
+        "subtasks": [],
+        "updatedAt": "2026-02-03T07:54:09.858Z"
+      },
+      {
+        "id": "20",
+        "title": "Vercel 배포 설정 및 프로덕션 최적화",
+        "description": "Next.js 16과 FastAPI를 Vercel에 배포하고 프로덕션 환경에서의 성능 최적화 및 SEO 설정을 완료합니다.",
+        "details": "1. Vercel 배포 설정:\n   - vercel.json 설정 파일 생성\n   - FastAPI를 Vercel Serverless Functions로 배포\n   - Next.js 16 App Router 최적화 설정\n2. 환경변수 설정:\n   - Vercel Dashboard에서 환경변수 등록\n   - SUPABASE_URL, SUPABASE_KEY\n   - NEXT_PUBLIC_API_URL (프로덕션 도메인)\n3. 이미지 최적화:\n   - Next.js Image 컴포넌트 설정\n   - 외부 이미지 도메인 허용 (Supabase Storage)\n   - 이미지 압축 및 WebP 변환\n4. SEO 최적화:\n   - 메타데이터 설정 (app/layout.tsx)\n   - Open Graph 태그\n   - 구조화된 데이터 (JSON-LD)\n   - robots.txt, sitemap.xml\n5. 성능 최적화:\n   - 코드 스플리팅 (dynamic imports)\n   - 번들 크기 최적화\n   - 캐싱 전략 설정\n6. 모니터링 설정:\n   - Vercel Analytics 연동\n   - 에러 추적 설정\n\n// vercel.json 예시\n{\n  \"functions\": {\n    \"api/**/*.py\": {\n      \"runtime\": \"python3.12\"\n    }\n  },\n  \"rewrites\": [\n    {\n      \"source\": \"/api/(.*)\",\n      \"destination\": \"/api/$1\"\n    }\n  ]\n}\n\n// app/layout.tsx 메타데이터\nexport const metadata: Metadata = {\n  title: '개발자 포트폴리오 | small-goliath',\n  description: '풀스택 개발자의 경력, 역량, 프로젝트를 체계적으로 보여주는 포트폴리오',\n  keywords: ['개발자', '포트폴리오', '풀스택', 'Next.js', 'FastAPI'],\n  openGraph: {\n    title: '개발자 포트폴리오 | small-goliath',\n    description: '풀스택 개발자의 경력, 역량, 프로젝트를 체계적으로 보여주는 포트폴리오',\n    type: 'website',\n    locale: 'ko_KR',\n  },\n};",
+        "testStrategy": "1. Vercel 배포 성공 확인 (빌드 로그 검토)\n2. 프로덕션 환경에서 모든 API 엔드포인트 동작 확인\n3. 이미지 최적화 및 로딩 성능 테스트\n4. SEO 메타데이터 및 Open Graph 태그 확인\n5. 모바일 반응형 디자인 테스트\n6. Lighthouse 성능 점수 측정 (90점 이상 목표)\n7. 다양한 브라우저 호환성 테스트\n8. 에러 추적 및 모니터링 동작 확인\n9. 캐싱 전략 효과 확인 (네트워크 탭 검토)",
+        "priority": "medium",
+        "dependencies": [
+          "19"
+        ],
+        "status": "cancelled",
+        "subtasks": [],
+        "updatedAt": "2026-02-03T07:54:09.863Z"
+      },
+      {
+        "id": 21,
+        "title": "Supabase PostgreSQL 데이터베이스 스키마 설계 및 구축",
+        "description": "포트폴리오 웹사이트의 모든 데이터를 저장할 Supabase PostgreSQL 데이터베이스 스키마를 설계하고 구축합니다.",
+        "details": "PRD의 데이터 모델을 기반으로 11개 테이블 생성: Profile, Timeline, Education, Skill, PeerReview, SideProject, Award, Internship, Research, Volunteer, ExtracurricularActivity, DailyRoutine. 각 테이블에 UUID 기본키, 적절한 외래키 관계, 인덱스 설정. PostgreSQL 16+ 기능 활용하여 JSONB 타입 사용 (Timeline.events, Skill.keywords). schema.sql 파일 작성 후 Supabase 콘솔에서 실행.",
+        "testStrategy": "Supabase 콘솔에서 테이블 생성 확인, 외래키 제약조건 테스트, 샘플 데이터 삽입/조회 테스트, 인덱스 성능 확인",
+        "priority": "high",
+        "dependencies": [],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 22,
+        "title": "Supabase 시드 데이터 생성 및 삽입",
+        "description": "개발 및 테스트를 위한 포트폴리오 샘플 데이터를 생성하고 데이터베이스에 삽입합니다.",
+        "details": "PRD 요구사항에 맞는 실제적인 샘플 데이터 생성: 프로필 정보, 타임라인 이벤트, 교육사항, 9개 카테고리별 기술 스택, 동료평가 이미지 URL, 사이드프로젝트, 수상내역, 인턴십, 연구활동, 봉사활동, 대외활동, 24시간 루틴 데이터(7개 시간대). seed.sql 파일 작성 후 Supabase에서 실행. 이미지 URL은 placeholder 서비스 또는 실제 이미지 사용.",
+        "testStrategy": "모든 테이블에 데이터 삽입 확인, 관계 무결성 검증, API 조회 시 올바른 데이터 반환 확인",
+        "priority": "high",
+        "dependencies": [
+          21
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 23,
+        "title": "FastAPI 백엔드 프로젝트 구조 설정 및 기본 설정",
+        "description": "FastAPI 0.115+ 기반 백엔드 프로젝트 구조를 설정하고 Supabase PostgreSQL 연결을 구성합니다.",
+        "details": "Python 3.12+ 가상환경 생성, FastAPI, uvicorn, asyncpg/psycopg2, python-dotenv 설치. 프로젝트 구조: /api 폴더에 main.py, database.py, models.py, routers/ 폴더 생성. Supabase 연결 설정 (환경변수 SUPABASE_URL, SUPABASE_KEY), 데이터베이스 연결 풀 설정, CORS 미들웨어 설정 (Next.js 개발서버 허용), Pydantic 모델 정의.",
+        "testStrategy": "FastAPI 서버 실행 확인, Supabase 연결 테스트, /docs 엔드포인트 접근 확인, CORS 설정 검증",
+        "priority": "high",
+        "dependencies": [
+          22
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 24,
+        "title": "FastAPI REST API 엔드포인트 개발",
+        "description": "포트폴리오 데이터 조회를 위한 모든 FastAPI REST API 엔드포인트를 개발합니다.",
+        "details": "11개 주요 엔드포인트 구현: GET /api/profile, /api/timeline, /api/education, /api/skills, /api/peer-reviews, /api/side-projects, /api/awards, /api/internships, /api/research, /api/volunteer, /api/extracurricular, /api/daily-routine. 각 엔드포인트는 비동기 처리, 에러 핸들링, 적절한 HTTP 상태코드 반환. Pydantic 응답 모델 정의, 데이터 검증 및 직렬화. 관리자 기능용 POST/PUT/DELETE 엔드포인트도 포함 (daily-routine 관리).",
+        "testStrategy": "각 엔드포인트 개별 테스트, Postman/Thunder Client로 API 호출 확인, 응답 데이터 구조 검증, 에러 케이스 테스트",
+        "priority": "high",
+        "dependencies": [
+          23
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 25,
+        "title": "Next.js 16 프론트엔드 프로젝트 설정 및 기본 구조",
+        "description": "Next.js 16 App Router, TypeScript 5.6+, TailwindCSS v4, shadcn/ui를 사용한 프론트엔드 프로젝트를 설정합니다.",
+        "details": "npx create-next-app@latest로 Next.js 16 프로젝트 생성 (App Router, TypeScript 활성화). TailwindCSS v4 설치 및 설정, shadcn/ui 초기화, Lucide React 아이콘 설치. 프로젝트 구조: /app 폴더에 page.tsx, layout.tsx, /components 폴더에 ui/, portfolio/ 하위폴더 생성. 환경변수 설정 (.env.local), API 통신용 axios 설치, SWR 또는 React Query 설정. concurrently 패키지로 개발서버 동시 실행 스크립트 작성.",
+        "testStrategy": "Next.js 개발서버 실행 확인, TailwindCSS 스타일 적용 테스트, shadcn/ui 컴포넌트 임포트 확인, TypeScript 컴파일 에러 없음 확인",
+        "priority": "high",
+        "dependencies": [
+          24
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 26,
+        "title": "프로필 영역 및 기본 레이아웃 컴포넌트 개발",
+        "description": "메인 포트폴리오 페이지의 프로필 영역과 전체 레이아웃을 구현합니다 (F001).",
+        "details": "ProfileSection 컴포넌트 개발: 성명, MBTI, 프로필 이미지 표시, Github/블로그/경력기술서 외부 링크 (새창 열기), 반응형 디자인 적용. API 연동으로 /api/profile 엔드포인트에서 데이터 조회, SWR/React Query로 캐싱 처리. Next.js Image 컴포넌트로 프로필 이미지 최적화, Lucide React 아이콘 사용. TailwindCSS로 모던한 카드 레이아웃 구현, 호버 효과 추가.",
+        "testStrategy": "프로필 데이터 정상 로딩 확인, 외부 링크 새창 열기 테스트, 이미지 최적화 확인, 반응형 디자인 테스트 (모바일/데스크톱)",
+        "priority": "medium",
+        "dependencies": [
+          25
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 27,
+        "title": "24시간 루틴 시계 컴포넌트 개발",
+        "description": "KST 기준 실시간 24시간 아날로그 시계와 시간대별 루틴 표시 기능을 구현합니다 (F012).",
+        "details": "DailyRoutineClock 컴포넌트 개발: SVG 기반 24시간 시계 렌더링 (모바일 280px, 데스크톱 400px), KST 기준 실시간 시침/분침 회전 애니메이션 (setInterval 1초마다 업데이트), 시간대별 호(Arc) 렌더링 (DB에서 조회한 루틴 데이터 기반), 5가지 네온 색상 (cyan, magenta, purple, green, orange) 및 3단계 글로우 강도 적용, 중앙에 'small-goliath' 텍스트 고정 표시, 범례 컴포넌트로 시간대별 라벨 표시. /api/daily-routine 엔드포인트 연동.",
+        "testStrategy": "실시간 시계 바늘 회전 확인, 루틴 데이터 기반 호 렌더링 테스트, 네온 색상 및 글로우 효과 확인, 반응형 크기 조정 테스트, 범례 표시 확인",
+        "priority": "medium",
+        "dependencies": [
+          26
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 28,
+        "title": "섹션 선택 UI 및 주요 섹션 컴포넌트 개발",
+        "description": "11개 섹션을 탭/아코디언 형태로 전환할 수 있는 UI와 타임라인, 교육사항, 역량 섹션을 구현합니다 (F023, F002, F003, F004).",
+        "details": "SectionTabs 컴포넌트: shadcn/ui Tabs 또는 Accordion 컴포넌트 활용, 11개 섹션 탭 구현 (타임라인, 교육사항, 역량, 동료평가, 사이드프로젝트, 수상, 인턴십, 연구활동, 봉사활동, 대외활동). TimelineSection: 연도별 회사/업무/이벤트 시간순 표시, 세로 타임라인 디자인. EducationSection: 시작/종료 연도, 교육기관/내용 카드 레이아웃. SkillsSection: 9개 카테고리별 기술 키워드 뱃지 그리드 표시. 각 섹션별 API 엔드포인트 연동.",
+        "testStrategy": "섹션 탭 전환 기능 테스트, 각 섹션 데이터 로딩 확인, 타임라인 시간순 정렬 검증, 교육사항 연도 표시 확인, 기술 스택 카테고리별 그룹핑 테스트",
+        "priority": "medium",
+        "dependencies": [
+          27
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 29,
+        "title": "동료평가 갤러리 및 나머지 섹션 컴포넌트 개발",
+        "description": "동료평가 이미지 갤러리와 나머지 7개 섹션 컴포넌트를 구현합니다 (F005-F011).",
+        "details": "PeerReviewSection: 이미지 그리드 레이아웃, yet-another-react-lightbox 라이브러리로 이미지 확대/축소 모달 구현. SideProjectsSection: 프로젝트명(링크), 설명, 상태 배지 카드 레이아웃. AwardsSection: 수상명(링크), 대회명, 상장 이미지 표시. InternshipSection: 회사명, 업무 내용 리스트. ResearchSection: 연구명(링크), 열람하기 버튼(문서 새창). VolunteerSection: 기관명, 봉사 내용 카드. ExtracurricularSection: 기관명, 활동 내용 카드. 모든 외부 링크는 새창 열기 처리.",
+        "testStrategy": "이미지 갤러리 확대/축소 기능 테스트, 외부 링크 새창 열기 확인, 각 섹션 데이터 표시 검증, 카드 레이아웃 반응형 테스트",
+        "priority": "medium",
+        "dependencies": [
+          28
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 30,
+        "title": "Vercel 배포 설정 및 최적화",
+        "description": "Next.js 16과 FastAPI를 Vercel에 배포하고 성능 최적화를 적용합니다.",
+        "details": "vercel.json 설정 파일 작성 (FastAPI Serverless Functions 설정), Vercel 환경변수 설정 (SUPABASE_URL, SUPABASE_KEY), Next.js 이미지 최적화 설정, SEO 메타데이터 추가 (title, description, og tags), 정적 자산 최적화, 빌드 최적화 설정. Vercel CLI로 배포 테스트, 도메인 연결 설정. 성능 모니터링 설정 (Core Web Vitals).",
+        "testStrategy": "Vercel 배포 성공 확인, API 엔드포인트 정상 작동 테스트, 이미지 최적화 확인, SEO 메타데이터 검증, 성능 점수 측정 (Lighthouse)",
+        "priority": "low",
+        "dependencies": [
+          29
+        ],
+        "status": "pending",
+        "subtasks": []
       }
     ],
     "metadata": {
-      "version": "1.0.0",
-      "lastModified": "2026-02-03T02:05:50.011Z",
-      "taskCount": 12,
-      "completedCount": 12,
-      "tags": [
-        "master"
-      ]
+      "created": "2026-02-03T08:02:54.702Z",
+      "updated": "2026-02-03T08:02:54.702Z",
+      "description": "Tasks for master context"
     }
   }
 }
