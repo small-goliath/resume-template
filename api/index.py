@@ -373,15 +373,17 @@ async def logout():
 
 
 @app.get("/auth/status")
-async def auth_status(response: Response):
+async def auth_status(admin_token: Optional[str] = Cookie(None)):
     """
-    Check authentication status
-    Note: This endpoint doesn't verify the token - that's done by Next.js middleware
-    It just returns whether a token cookie exists
+    Check authentication status and debug token validation
     """
     return {
         "admin_token_configured": bool(ADMIN_SECRET_TOKEN),
-        "message": "Use Next.js middleware for actual auth verification"
+        "admin_token_value_length": len(ADMIN_SECRET_TOKEN) if ADMIN_SECRET_TOKEN else 0,
+        "cookie_received": bool(admin_token),
+        "cookie_value_length": len(admin_token) if admin_token else 0,
+        "tokens_match": admin_token == ADMIN_SECRET_TOKEN if admin_token and ADMIN_SECRET_TOKEN else False,
+        "message": "Use for debugging authentication"
     }
 
 
