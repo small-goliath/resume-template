@@ -3,6 +3,9 @@ import type { NextConfig } from 'next'
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   compress: true,
+  env: {
+    ADMIN_SECRET_TOKEN: process.env.ADMIN_SECRET_TOKEN,
+  },
   images: {
     formats: ['image/webp', 'image/avif'],
     remotePatterns: [
