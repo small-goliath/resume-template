@@ -141,6 +141,19 @@ export interface SectionVisibility {
   updated_at: string
 }
 
+export interface DailyRoutine {
+  id: string
+  profile_id: string
+  start_hour: number // 0-23
+  end_hour: number // 0-23
+  label: string
+  color: 'neon-cyan' | 'neon-magenta' | 'neon-purple' | 'neon-green' | 'neon-orange'
+  intensity: 'dim' | 'medium' | 'bright'
+  sort_order: number
+  created_at: string
+  updated_at: string
+}
+
 // API Response 타입
 export type ApiResponse<T> =
   | {

@@ -18,6 +18,7 @@ import type {
   Volunteer,
   ExternalActivity,
   SectionVisibility,
+  DailyRoutine,
   ApiError,
 } from '@/types'
 
@@ -173,6 +174,14 @@ export function useActivities(): UseResourceReturn<ExternalActivity[]> {
  */
 export function useSectionVisibility(): UseResourceReturn<SectionVisibility> {
   return useResource<SectionVisibility>('/section-visibility')
+}
+
+/**
+ * 13. 일일 루틴 조회
+ * GET /api/daily-routine
+ */
+export function useDailyRoutine(): UseResourceReturn<DailyRoutine[]> {
+  return useResource<DailyRoutine[]>('/daily-routine')
 }
 
 /**
