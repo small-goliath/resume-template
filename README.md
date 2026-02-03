@@ -12,6 +12,7 @@ Next.js 16.1.6 + FastAPI + Supabase 기반 개인 포트폴리오 관리 시스�
 ## 🛠️ 기술 스택
 
 ### Frontend
+
 - Next.js 16.1.6 (App Router + Turbopack)
 - React 19.1.0
 - TypeScript 5
@@ -20,6 +21,7 @@ Next.js 16.1.6 + FastAPI + Supabase 기반 개인 포트폴리오 관리 시스�
 - React Hook Form + Zod
 
 ### Backend
+
 - FastAPI (Vercel Serverless Functions)
 - Supabase PostgreSQL
 - Python 3.12+

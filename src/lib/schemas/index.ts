@@ -14,10 +14,18 @@ export const profileSchema = z.object({
     .regex(/^[EISTFPNJ]{4}$/, '유효한 MBTI 유형을 입력하세요')
     .nullable()
     .optional(),
-  profile_image_url: z.string().url('유효한 URL을 입력하세요').nullable().optional(),
+  profile_image_url: z
+    .string()
+    .url('유효한 URL을 입력하세요')
+    .nullable()
+    .optional(),
   github_url: z.string().url('유효한 URL을 입력하세요').nullable().optional(),
   blog_url: z.string().url('유효한 URL을 입력하세요').nullable().optional(),
-  career_document_url: z.string().url('유효한 URL을 입력하세요').nullable().optional(),
+  career_document_url: z
+    .string()
+    .url('유효한 URL을 입력하세요')
+    .nullable()
+    .optional(),
 })
 
 export type ProfileInput = z.infer<typeof profileSchema>
@@ -37,7 +45,12 @@ export type TimelineInput = z.infer<typeof timelineSchema>
 export const educationSchema = z.object({
   institution_name: z.string().min(1, '교육 기관명을 입력하세요'),
   start_year: z.number().int().min(1900, '유효한 시작 연도를 입력하세요'),
-  end_year: z.number().int().min(1900, '유효한 종료 연도를 입력하세요').nullable().optional(),
+  end_year: z
+    .number()
+    .int()
+    .min(1900, '유효한 종료 연도를 입력하세요')
+    .nullable()
+    .optional(),
   description: z.string().min(1, '교육 내용을 입력하세요'),
   sort_order: z.number().int().default(0),
 })
@@ -56,7 +69,11 @@ export type SkillInput = z.infer<typeof skillSchema>
 // 동료평가 스키마
 export const peerReviewSchema = z.object({
   image_url: z.string().url('유효한 URL을 입력하세요'),
-  thumbnail_url: z.string().url('유효한 URL을 입력하세요').nullable().optional(),
+  thumbnail_url: z
+    .string()
+    .url('유효한 URL을 입력하세요')
+    .nullable()
+    .optional(),
   description: z.string().nullable().optional(),
   year: z.number().int().min(1900, '유효한 연도를 입력하세요'),
   sort_order: z.number().int().default(0),
@@ -92,8 +109,12 @@ export type AwardInput = z.infer<typeof awardSchema>
 export const internshipSchema = z.object({
   company: z.string().min(1, '회사명을 입력하세요'),
   description: z.string().min(1, '업무 내용을 입력하세요'),
-  start_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, '유효한 날짜 형식(YYYY-MM-DD)을 입력하세요'),
-  end_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, '유효한 날짜 형식(YYYY-MM-DD)을 입력하세요'),
+  start_date: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, '유효한 날짜 형식(YYYY-MM-DD)을 입력하세요'),
+  end_date: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, '유효한 날짜 형식(YYYY-MM-DD)을 입력하세요'),
   sort_order: z.number().int().default(0),
 })
 

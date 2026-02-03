@@ -19,13 +19,13 @@ Developer Portfolio는 단일 사용자(개발자)를 위한 포트폴리오 관
 
 ## 프로젝트 현재 상태
 
-| 구분 | 상태 | 비고 |
-|------|------|------|
-| FastAPI 백엔드 기본 | 완료 | 인증, 프로필, 타임라인, 섹션가시성 API |
-| 데이터베이스 스키마 | 완료 | 12개 테이블 정의 |
-| Seed 데이터 | 완료 | 샘플 데이터 준비 |
-| Next.js 프론트엔드 | 미시작 | src/ 디렉토리 비어있음 |
-| UI 컴포넌트 | 미시작 | shadcn/ui 미설치 |
+| 구분                | 상태   | 비고                                   |
+| ------------------- | ------ | -------------------------------------- |
+| FastAPI 백엔드 기본 | 완료   | 인증, 프로필, 타임라인, 섹션가시성 API |
+| 데이터베이스 스키마 | 완료   | 12개 테이블 정의                       |
+| Seed 데이터         | 완료   | 샘플 데이터 준비                       |
+| Next.js 프론트엔드  | 미시작 | src/ 디렉토리 비어있음                 |
+| UI 컴포넌트         | 미시작 | shadcn/ui 미설치                       |
 
 ## 개발 워크플로우
 
@@ -137,7 +137,7 @@ Developer Portfolio는 단일 사용자(개발자)를 위한 포트폴리오 관
   - 의존성: Task 003
   - shadcn/ui 초기화 (npx shadcn@latest init)
   - 필수 컴포넌트 설치: button, card, tabs, accordion, badge, avatar, dialog, separator, scroll-area
-  - /src/components/ui/* (shadcn 컴포넌트 디렉토리)
+  - /src/components/ui/\* (shadcn 컴포넌트 디렉토리)
   - 테마 색상 설정 (개발자스러운 다크모드 친화적 디자인)
 
 - **Task 007: 공통 레이아웃 컴포넌트**
@@ -359,23 +359,23 @@ Developer Portfolio는 단일 사용자(개발자)를 위한 포트폴리오 관
 
 ## PRD 기능 매핑
 
-| PRD ID | 기능명 | 관련 Task | Phase |
-|--------|--------|-----------|-------|
-| F001 | 프로필 정보 표시 | Task 008 | Phase 3 |
-| F002 | 타임라인 표시 | Task 010 | Phase 4 |
-| F003 | 교육사항 표시 | Task 011 | Phase 4 |
-| F004 | 역량 표시 | Task 012 | Phase 4 |
-| F005 | 동료평가 갤러리 | Task 013 | Phase 4 |
-| F006 | 사이드프로젝트 표시 | Task 014 | Phase 4 |
-| F007 | 수상 내역 표시 | Task 015 | Phase 5 |
-| F008 | 인턴십 표시 | Task 016 | Phase 5 |
-| F009 | 연구활동 표시 | Task 017 | Phase 5 |
-| F010 | 봉사활동 표시 | Task 018 | Phase 5 |
-| F011 | 대/외활동 표시 | Task 019 | Phase 5 |
-| F020 | FastAPI 데이터 조회 | Task 001, Task 021, Task 022 | Phase 1, 6 |
-| F021 | Supabase PostgreSQL | (완료) | - |
-| F022 | 로컬 개발 환경 | Task 002 | Phase 1 |
-| F023 | 섹션 선택 UI | Task 009 | Phase 3 |
+| PRD ID | 기능명              | 관련 Task                    | Phase      |
+| ------ | ------------------- | ---------------------------- | ---------- |
+| F001   | 프로필 정보 표시    | Task 008                     | Phase 3    |
+| F002   | 타임라인 표시       | Task 010                     | Phase 4    |
+| F003   | 교육사항 표시       | Task 011                     | Phase 4    |
+| F004   | 역량 표시           | Task 012                     | Phase 4    |
+| F005   | 동료평가 갤러리     | Task 013                     | Phase 4    |
+| F006   | 사이드프로젝트 표시 | Task 014                     | Phase 4    |
+| F007   | 수상 내역 표시      | Task 015                     | Phase 5    |
+| F008   | 인턴십 표시         | Task 016                     | Phase 5    |
+| F009   | 연구활동 표시       | Task 017                     | Phase 5    |
+| F010   | 봉사활동 표시       | Task 018                     | Phase 5    |
+| F011   | 대/외활동 표시      | Task 019                     | Phase 5    |
+| F020   | FastAPI 데이터 조회 | Task 001, Task 021, Task 022 | Phase 1, 6 |
+| F021   | Supabase PostgreSQL | (완료)                       | -          |
+| F022   | 로컬 개발 환경      | Task 002                     | Phase 1    |
+| F023   | 섹션 선택 UI        | Task 009                     | Phase 3    |
 
 ---
 
