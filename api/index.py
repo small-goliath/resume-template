@@ -44,14 +44,20 @@ app = FastAPI(
 )
 
 # CORS Configuration
-# 로컬 개발: Next.js 개발 서버(localhost:3000)만 허용
-# 프로덕션: Vercel이 자동으로 same-origin이므로 CORS 불필요
+# 로컬 개발 및 프로덕션 환경 모두 지원
+allowed_origins = [
+    "http://localhost:3000",  # 로컬 개발
+    "https://claude-nextjs-starters-ten.vercel.app",  # 프로덕션
+]
+
+# Vercel Preview 환경 지원 (VERCEL_URL 환경변수 사용)
+vercel_url = os.getenv("VERCEL_URL")
+if vercel_url:
+    allowed_origins.append(f"https://{vercel_url}")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",  # 로컬 개발 환경
-        "https://*.vercel.app",   # Vercel 프리뷰/프로덕션
-    ],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
