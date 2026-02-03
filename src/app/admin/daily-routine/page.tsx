@@ -6,7 +6,7 @@
  * 24시간 루틴 시계 데이터 CRUD 기능 제공
  */
 
-import { useState } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -41,7 +41,7 @@ import {
 import { DeleteConfirmDialog } from '@/components/admin/delete-confirm-dialog'
 import { useDailyRoutine } from '@/lib/hooks/use-portfolio-data'
 import { apiClient } from '@/lib/api-client'
-import { Plus, Edit, Trash2, Clock } from 'lucide-react'
+import { Plus, Edit, Trash2, Clock, AlertCircle } from 'lucide-react'
 import type { DailyRoutine } from '@/types'
 
 /**
@@ -63,6 +63,70 @@ const intensityOptions = [
   { value: 'medium', label: 'Medium (중간)' },
   { value: 'bright', label: 'Bright (높음)' },
 ]
+
+/**
+ * 시간대 충돌 검증 헬퍼 함수
+ */
+
+/**
+ * 두 시간 범위가 겹치는지 확인
+ * 자정을 넘어가는 경우도 처리 (예: 23시 ~ 2시)
+ */
+function checkTimeOverlap(
+  start1: number,
+  end1: number,
+  start2: number,
+  end2: number
+): boolean {
+  // 시간 범위를 정규화 (자정 넘어가는 경우 두 구간으로 분리)
+  const normalizeRange = (start: number, end: number) => {
+    if (start > end) {
+      // 자정 넘어감: 23시 ~ 2시 → [(23, 23), (0, 2)]
+      return [
+        { start, end: 23 },
+        { start: 0, end },
+      ]
+    }
+    return [{ start, end }]
+  }
+
+  const ranges1 = normalizeRange(start1, end1)
+  const ranges2 = normalizeRange(start2, end2)
+
+  // 모든 구간 조합에 대해 겹침 체크
+  for (const range1 of ranges1) {
+    for (const range2 of ranges2) {
+      // 겹침 조건: range1의 시작이 range2 끝 이하 AND range2의 시작이 range1 끝 이하
+      if (range1.start <= range2.end && range2.start <= range1.end) {
+        return true
+      }
+    }
+  }
+
+  return false
+}
+
+/**
+ * 현재 입력값과 겹치는 기존 루틴들 찾기
+ */
+function findOverlappingRoutines(
+  currentRoutine: { start_hour: number; end_hour: number; id?: string },
+  allRoutines: DailyRoutine[]
+): DailyRoutine[] {
+  return allRoutines.filter((routine) => {
+    // 수정 중인 루틴은 제외
+    if (currentRoutine.id && routine.id === currentRoutine.id) {
+      return false
+    }
+
+    return checkTimeOverlap(
+      currentRoutine.start_hour,
+      currentRoutine.end_hour,
+      routine.start_hour,
+      routine.end_hour
+    )
+  })
+}
 
 /**
  * 일일 루틴 폼 스키마
@@ -108,6 +172,26 @@ export default function AdminDailyRoutinePage() {
 
   const selectedColor = watch('color')
   const selectedIntensity = watch('intensity')
+  const watchedStartHour = watch('start_hour')
+  const watchedEndHour = watch('end_hour')
+
+  /**
+   * 현재 입력값과 겹치는 루틴들 계산
+   */
+  const overlappingRoutines = useMemo(() => {
+    if (!routines || watchedStartHour === undefined || watchedEndHour === undefined) {
+      return []
+    }
+
+    return findOverlappingRoutines(
+      {
+        start_hour: watchedStartHour,
+        end_hour: watchedEndHour,
+        id: editingItem?.id,
+      },
+      routines
+    )
+  }, [routines, watchedStartHour, watchedEndHour, editingItem?.id])
 
   /**
    * 새 루틴 추가 버튼 클릭
@@ -327,6 +411,33 @@ export default function AdminDailyRoutinePage() {
           </DialogHeader>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            {/* 시간대 충돌 경고 */}
+            {overlappingRoutines.length > 0 && (
+              <div className="rounded-md border border-[--color-neon-orange-600] bg-[--color-neon-orange-500]/10 p-4">
+                <div className="flex gap-3">
+                  <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-[--color-neon-orange-500]" />
+                  <div className="space-y-2">
+                    <p className="font-semibold text-[--color-neon-orange-500]">
+                      ⚠️ 시간대 충돌 경고
+                    </p>
+                    <p className="text-sm text-[--color-neon-orange-400]">
+                      다음 루틴과 시간이 겹칩니다:
+                    </p>
+                    <ul className="space-y-1 text-sm text-[--color-neon-orange-400]">
+                      {overlappingRoutines.map((routine) => (
+                        <li key={routine.id} className="font-mono">
+                          • {routine.label} ({formatHour(routine.start_hour)} ~ {formatHour(routine.end_hour)})
+                        </li>
+                      ))}
+                    </ul>
+                    <p className="text-xs text-[--color-neon-orange-500]">
+                      💡 저장은 가능하지만, 시계에서 루틴이 겹쳐 보일 수 있습니다.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* 시작 시간 */}
             <div className="space-y-2">
               <Label htmlFor="start_hour" className="text-[--color-neon-cyan-500]">
