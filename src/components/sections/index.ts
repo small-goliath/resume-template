@@ -37,3 +37,12 @@ export { SkillsSection } from './skills'
 
 // 동료평가 섹션 컴포넌트
 export { PeerReviewsSection } from './peer-reviews'
+
+// 사이드프로젝트 섹션 컴포넌트
+export { ProjectsSection } from './projects'
+
+// 수상 섹션 컴포넌트
+export { AwardsSection } from './awards'
+
+// 인턴십 섹션 컴포넌트
+export { InternshipsSection } from './internships'
