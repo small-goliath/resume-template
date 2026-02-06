@@ -26,6 +26,7 @@ const sections = [
   { id: 'awards', label: 'Awards', icon: '◈' },
   { id: 'internships', label: 'Internships', icon: '◈' },
   { id: 'research', label: 'Research', icon: '◈' },
+  { id: 'tech-seminars', label: 'Tech Seminars', icon: '◈' },
   { id: 'volunteer', label: 'Volunteer', icon: '◈' },
   { id: 'activities', label: 'Activities', icon: '◈' },
 ]

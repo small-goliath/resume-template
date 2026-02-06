@@ -15,6 +15,7 @@ import type {
   Award,
   Internship,
   Research,
+  TechSeminar,
   Volunteer,
   ExternalActivity,
   SectionVisibility,
@@ -145,6 +146,14 @@ export function useResearch(): UseResourceReturn<Research[]> {
 }
 
 /**
+ * 9-1. 기술공유 세미나 조회
+ * GET /api/tech-seminars
+ */
+export function useTechSeminars(): UseResourceReturn<TechSeminar[]> {
+  return useResource<TechSeminar[]>('/tech-seminars')
+}
+
+/**
  * 10. 봉사활동 조회
  * GET /api/volunteer
  */
@@ -235,6 +244,7 @@ export function usePortfolioData() {
   const awards = useAwards()
   const internships = useInternships()
   const research = useResearch()
+  const techSeminars = useTechSeminars()
   const volunteer = useVolunteer()
   const externalActivities = useExternalActivities()
   const sectionVisibility = useSectionVisibility()
@@ -260,6 +270,7 @@ export function usePortfolioData() {
     awards,
     internships,
     research,
+    techSeminars,
     volunteer,
     externalActivities,
     sectionVisibility,

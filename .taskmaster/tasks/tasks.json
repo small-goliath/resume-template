@@ -417,6 +417,88 @@
         ],
         "status": "pending",
         "subtasks": []
+      },
+      {
+        "id": "31",
+        "title": "F014 기술공유 세미나 섹션 추가",
+        "description": "개발자의 기술공유 활동(세미나, 발표)을 포트폴리오에 추가하는 기능. 연도, 세미나명(필수), 링크(선택) 입력 지원. 포트폴리오 공개 페이지 + 관리자 CRUD 페이지 구현.",
+        "details": "## 작업 개요\n**기능**: F014 - 기술공유 세미나 섹션 추가\n**목적**: 개발자의 기술공유 활동(세미나, 발표 등)을 포트폴리오에 추가\n**기술 스택**: Next.js 16, FastAPI, Supabase PostgreSQL, TypeScript, TailwindCSS v4\n\n## 구현 단계\n\n### Phase 1: 기반 작업\n1. 문서 및 스키마 설계 (1h)\n2. 데이터베이스 마이그레이션 (0.5h)\n\n### Phase 2: 백엔드\n3. FastAPI API 개발 (2h)\n\n### Phase 3: 프론트엔드 - 데이터 레이어\n4. TypeScript 타입 & SWR 훅 (0.5h)\n5. 포트폴리오 섹션 UI (2h)\n\n### Phase 4: 프론트엔드 - 관리 기능\n6. 관리자 페이지 (2.5h)\n\n### Phase 5: 통합 및 검증\n7. 통합 테스트 & 배포 (1.5h)\n\n**총 예상 소요 시간**: 7.5 - 10.5시간\n\n## 데이터 모델\n- tech_seminar 테이블\n- 필드: id, seminar_name (TEXT, required), seminar_url (TEXT, optional), year (INTEGER, required), sort_order (INTEGER)\n\n## 참고 파일\n- Research 섹션 (`src/components/sections/research/`) - 전체 구조 참조\n- Volunteer 섹션 (`src/components/sections/volunteer/`) - 간단한 구조 참조\n- Award API (`api/index.py`) - API 패턴 참조",
+        "testStrategy": "## 검증 방법\n\n### 1. 로컬 환경 통합 테스트\n- `npm run dev` 실행 (Next.js + FastAPI)\n- 포트폴리오 페이지에서 세미나 섹션 확인\n- 섹션 네비게이션 이동 테스트\n- 링크 클릭 시 새창 열림 확인\n\n### 2. 관리자 페이지 E2E 테스트\n- /login으로 관리자 로그인\n- /admin/tech-seminars 접근\n- 세미나 추가 (필수/선택 필드 검증)\n- 세미나 수정\n- 세미나 삭제\n- 포트폴리오 페이지에서 반영 확인\n\n### 3. 빌드 및 타입 체크\n- `npm run typecheck` (에러 없음)\n- `npm run lint` (경고 없음)\n- `npm run build` (빌드 성공)\n\n### 4. 프로덕션 배포\n- Supabase 프로덕션 DB 마이그레이션\n- Vercel 배포 성공\n- 프로덕션 환경에서 모든 API 정상 동작",
+        "priority": "high",
+        "dependencies": [],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": "31.1",
+            "title": "문서 및 스키마 설계",
+            "description": "PRD 문서 업데이트 및 데이터베이스 스키마 설계",
+            "status": "done",
+            "details": "- PRD.md에 F014 기능 추가\n- scheme.sql에 tech_seminar 테이블 DDL 작성\n- 데이터 모델 정합성 확인"
+          },
+          {
+            "id": "31.2",
+            "title": "데이터베이스 마이그레이션",
+            "description": "Supabase PostgreSQL에 tech_seminar 테이블 생성 및 RLS 설정",
+            "status": "pending",
+            "dependencies": [
+              "31.1"
+            ],
+            "details": "- 로컬 개발 DB 마이그레이션\n- 인덱스 및 RLS 정책 확인\n- 샘플 데이터 테스트"
+          },
+          {
+            "id": "31.3",
+            "title": "FastAPI 엔드포인트 구현",
+            "description": "tech_seminar CRUD API 개발 (GET, POST, PUT, DELETE)",
+            "status": "pending",
+            "dependencies": [
+              "31.2"
+            ],
+            "details": "- Pydantic 모델 정의\n- GET /tech-seminars (공개 조회)\n- POST/PUT/DELETE (관리자 인증)"
+          },
+          {
+            "id": "31.4",
+            "title": "TypeScript 타입 정의 및 SWR 훅",
+            "description": "TechSeminar 인터페이스 및 useTechSeminars 훅 구현",
+            "status": "pending",
+            "dependencies": [
+              "31.3"
+            ],
+            "details": "- src/types/index.ts에 TechSeminar 인터페이스 추가\n- src/lib/hooks/use-portfolio-data.ts에 useTechSeminars 훅 추가"
+          },
+          {
+            "id": "31.5",
+            "title": "포트폴리오 섹션 컴포넌트 구현",
+            "description": "공개 포트폴리오 페이지에 기술공유 세미나 섹션 UI 구현",
+            "status": "pending",
+            "dependencies": [
+              "31.4"
+            ],
+            "details": "- src/components/sections/tech-seminars/ 디렉토리 생성\n- 4개 컴포넌트 구현 (section, content, skeleton, error)\n- 메인 페이지 및 네비게이션 통합"
+          },
+          {
+            "id": "31.6",
+            "title": "관리자 페이지 구현",
+            "description": "관리자 CRUD 페이지 구현 (추가/수정/삭제)",
+            "status": "pending",
+            "dependencies": [
+              "31.3",
+              "31.4"
+            ],
+            "details": "- src/app/admin/tech-seminars/page.tsx 생성\n- React Hook Form + Zod 스키마\n- 테이블 UI 및 폼 UI\n- 관리자 네비게이션 업데이트"
+          },
+          {
+            "id": "31.7",
+            "title": "통합 테스트 및 배포 준비",
+            "description": "전체 시스템 통합 테스트 및 프로덕션 배포",
+            "status": "pending",
+            "dependencies": [
+              "31.5",
+              "31.6"
+            ],
+            "details": "- 로컬 환경 통합 테스트\n- 관리자 페이지 E2E 테스트\n- 빌드 및 타입 체크\n- 프로덕션 DB 마이그레이션\n- Vercel 배포 검증"
+          }
+        ],
+        "updatedAt": "2026-02-06T10:00:00.000Z"
       }
     ],
     "metadata": {

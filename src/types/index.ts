@@ -105,6 +105,16 @@ export interface Research {
   updated_at: string
 }
 
+export interface TechSeminar {
+  id: string
+  seminar_name: string
+  seminar_url: string | null
+  year: number
+  sort_order: number
+  created_at: string
+  updated_at: string
+}
+
 export interface Volunteer {
   id: string
   organization: string

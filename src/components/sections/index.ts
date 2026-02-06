@@ -50,6 +50,9 @@ export { InternshipsSection } from './internships'
 // 연구활동 섹션 컴포넌트
 export { ResearchSection } from './research'
 
+// 기술공유 세미나 섹션 컴포넌트
+export { TechSeminarsSection } from './tech-seminars'
+
 // 봉사활동 섹션 컴포넌트
 export { VolunteerSection } from './volunteer'
 

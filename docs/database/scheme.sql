@@ -149,7 +149,20 @@ CREATE TABLE IF NOT EXISTS peer_review (
 );
 
 -- ===================================
--- 11. SideProject (사이드프로젝트)
+-- 11. TechSeminar (기술공유 세미나)
+-- ===================================
+CREATE TABLE IF NOT EXISTS tech_seminar (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  seminar_name TEXT NOT NULL,
+  seminar_url TEXT,
+  year INTEGER NOT NULL,
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- ===================================
+-- 12. SideProject (사이드프로젝트)
 -- ===================================
 CREATE TABLE IF NOT EXISTS side_project (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -166,7 +179,7 @@ CREATE TABLE IF NOT EXISTS side_project (
 -- status 값 예시: '서비스 중', '개발 완료', '개발 중', '중단'
 
 -- ===================================
--- 12. SectionVisibility (섹션 표시 설정)
+-- 13. SectionVisibility (섹션 표시 설정)
 -- ===================================
 CREATE TABLE IF NOT EXISTS section_visibility (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -185,7 +198,7 @@ CREATE TABLE IF NOT EXISTS section_visibility (
 );
 
 -- ===================================
--- 13. DailyRoutine (일일 루틴)
+-- 14. DailyRoutine (일일 루틴)
 -- ===================================
 CREATE TABLE IF NOT EXISTS daily_routine (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -214,6 +227,7 @@ CREATE INDEX IF NOT EXISTS idx_external_activity_year ON external_activity(year 
 CREATE INDEX IF NOT EXISTS idx_internship_start ON internship(start_date DESC, sort_order);
 CREATE INDEX IF NOT EXISTS idx_research_year ON research(year DESC, sort_order);
 CREATE INDEX IF NOT EXISTS idx_peer_review_year ON peer_review(year DESC, sort_order);
+CREATE INDEX IF NOT EXISTS idx_tech_seminar_year ON tech_seminar(year DESC, sort_order);
 CREATE INDEX IF NOT EXISTS idx_side_project_year ON side_project(year DESC, sort_order);
 CREATE INDEX IF NOT EXISTS idx_daily_routine_sort ON daily_routine(sort_order);
 CREATE INDEX IF NOT EXISTS idx_daily_routine_profile ON daily_routine(profile_id);
@@ -232,6 +246,7 @@ ALTER TABLE external_activity ENABLE ROW LEVEL SECURITY;
 ALTER TABLE internship ENABLE ROW LEVEL SECURITY;
 ALTER TABLE research ENABLE ROW LEVEL SECURITY;
 ALTER TABLE peer_review ENABLE ROW LEVEL SECURITY;
+ALTER TABLE tech_seminar ENABLE ROW LEVEL SECURITY;
 ALTER TABLE side_project ENABLE ROW LEVEL SECURITY;
 ALTER TABLE section_visibility ENABLE ROW LEVEL SECURITY;
 ALTER TABLE daily_routine ENABLE ROW LEVEL SECURITY;
@@ -247,6 +262,7 @@ CREATE POLICY "Enable read access for all users" ON external_activity FOR SELECT
 CREATE POLICY "Enable read access for all users" ON internship FOR SELECT USING (true);
 CREATE POLICY "Enable read access for all users" ON research FOR SELECT USING (true);
 CREATE POLICY "Enable read access for all users" ON peer_review FOR SELECT USING (true);
+CREATE POLICY "Enable read access for all users" ON tech_seminar FOR SELECT USING (true);
 CREATE POLICY "Enable read access for all users" ON side_project FOR SELECT USING (true);
 CREATE POLICY "Enable read access for all users" ON section_visibility FOR SELECT USING (true);
 CREATE POLICY "Enable read access for all users" ON daily_routine FOR SELECT USING (true);
@@ -273,6 +289,7 @@ CREATE TRIGGER update_external_activity_updated_at BEFORE UPDATE ON external_act
 CREATE TRIGGER update_internship_updated_at BEFORE UPDATE ON internship FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_research_updated_at BEFORE UPDATE ON research FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_peer_review_updated_at BEFORE UPDATE ON peer_review FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+CREATE TRIGGER update_tech_seminar_updated_at BEFORE UPDATE ON tech_seminar FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_side_project_updated_at BEFORE UPDATE ON side_project FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_section_visibility_updated_at BEFORE UPDATE ON section_visibility FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_daily_routine_updated_at BEFORE UPDATE ON daily_routine FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();

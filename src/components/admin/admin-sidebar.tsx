@@ -3,7 +3,7 @@
 /**
  * 관리자 사이드바 컴포넌트 - 사이버펑크 스타일
  *
- * 11개 섹션 + 설정 메뉴를 포함한 사이드바 네비게이션
+ * 12개 섹션 + 설정 메뉴를 포함한 사이드바 네비게이션
  * 모바일에서는 햄버거 메뉴로 전환
  */
 
@@ -22,6 +22,7 @@ import {
   Award,
   Briefcase,
   FlaskConical,
+  Mic,
   Heart,
   Sparkles,
   Settings,
@@ -56,6 +57,7 @@ const navItems: NavItem[] = [
   { name: '수상', href: '/admin/awards', icon: Award },
   { name: '인턴십', href: '/admin/internships', icon: Briefcase },
   { name: '연구활동', href: '/admin/research', icon: FlaskConical },
+  { name: '기술공유 세미나', href: '/admin/tech-seminars', icon: Mic },
   { name: '봉사활동', href: '/admin/volunteer', icon: Heart },
   { name: '대외활동', href: '/admin/activities', icon: Sparkles },
 ]

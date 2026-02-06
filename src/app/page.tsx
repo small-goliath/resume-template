@@ -17,6 +17,7 @@ import { ProjectsSection } from '@/components/sections/projects'
 import { AwardsSection } from '@/components/sections/awards'
 import { InternshipsSection } from '@/components/sections/internships'
 import { ResearchSection } from '@/components/sections/research'
+import { TechSeminarsSection } from '@/components/sections/tech-seminars'
 import { VolunteerSection } from '@/components/sections/volunteer'
 import { ActivitiesSection } from '@/components/sections/activities'
 import { useSectionAnimation } from '@/hooks/use-section-animation'
@@ -122,7 +123,18 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* 10. 봉사활동 섹션 */}
+        {/* 10. 기술공유 세미나 섹션 */}
+        <section
+          id="tech-seminars"
+          className="section-fullscreen opacity-0"
+          data-section="tech-seminars"
+        >
+          <div className="container mx-auto max-w-7xl px-4 py-12 w-full overflow-y-auto max-h-screen">
+            <TechSeminarsSection />
+          </div>
+        </section>
+
+        {/* 11. 봉사활동 섹션 */}
         <section
           id="volunteer"
           className="section-fullscreen opacity-0"
@@ -133,7 +145,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* 11. 대외활동 섹션 */}
+        {/* 12. 대외활동 섹션 */}
         <section
           id="activities"
           className="section-fullscreen opacity-0"
