@@ -252,6 +252,21 @@ class ResearchUpdate(BaseModel):
     sort_order: Optional[int] = Field(None, ge=0)
 
 
+# Pydantic Models for TechSeminar
+class TechSeminarCreate(BaseModel):
+    seminar_name: str = Field(..., min_length=1, max_length=200, description="세미나명")
+    seminar_url: Optional[str] = Field(None, description="세미나 링크 (선택사항)")
+    year: int = Field(..., ge=1900, le=2100, description="연도")
+    sort_order: int = Field(default=0, ge=0, description="정렬 순서")
+
+
+class TechSeminarUpdate(BaseModel):
+    seminar_name: Optional[str] = Field(None, min_length=1, max_length=200)
+    seminar_url: Optional[str] = Field(None)
+    year: Optional[int] = Field(None, ge=1900, le=2100)
+    sort_order: Optional[int] = Field(None, ge=0)
+
+
 # Pydantic Models for Volunteer
 class VolunteerCreate(BaseModel):
     organization: str = Field(..., min_length=1, max_length=200, description="조직명")
@@ -1420,6 +1435,111 @@ async def delete_research(
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to delete research: {str(e)}")
+
+
+# ===================================
+# TechSeminar Endpoints (기술공유 세미나)
+# ===================================
+@app.get("/tech-seminars")
+async def get_tech_seminars():
+    """Get all tech seminar entries, sorted by year desc and sort_order"""
+    try:
+        if not SUPABASE_URL or not SUPABASE_ANON_KEY:
+            raise HTTPException(status_code=500, detail="Supabase credentials not configured")
+
+        supabase: Client = create_client(SUPABASE_URL, SUPABASE_ANON_KEY)
+        response = supabase.table("tech_seminar").select("*").order("year", desc=True).order("sort_order").execute()
+
+        return response.data
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to fetch tech seminars: {str(e)}")
+
+
+@app.post("/tech-seminars")
+async def create_tech_seminar(
+    seminar_data: TechSeminarCreate,
+    _: str = Depends(verify_admin_token)
+):
+    """Create a new tech seminar entry (관리자 인증 필요)"""
+    try:
+        if not SUPABASE_URL or not SUPABASE_SERVICE_ROLE_KEY:
+            raise HTTPException(status_code=500, detail="Supabase credentials not configured")
+
+        payload = seminar_data.model_dump()
+        supabase: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
+        response = supabase.table("tech_seminar").insert(payload).execute()
+
+        if not response.data:
+            raise HTTPException(status_code=500, detail="Failed to create tech seminar entry")
+
+        return {
+            "message": "Tech seminar entry created successfully",
+            "data": response.data[0]
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to create tech seminar: {str(e)}")
+
+
+@app.put("/tech-seminars/{seminar_id}")
+async def update_tech_seminar(
+    seminar_id: str,
+    seminar_data: TechSeminarUpdate,
+    _: str = Depends(verify_admin_token)
+):
+    """Update a tech seminar entry by ID (관리자 인증 필요)"""
+    try:
+        if not SUPABASE_URL or not SUPABASE_SERVICE_ROLE_KEY:
+            raise HTTPException(status_code=500, detail="Supabase credentials not configured")
+
+        payload = seminar_data.model_dump(exclude_unset=True)
+
+        if not payload:
+            raise HTTPException(status_code=400, detail="No fields to update")
+
+        supabase: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
+        response = supabase.table("tech_seminar").update(payload).eq("id", seminar_id).execute()
+
+        if not response.data:
+            raise HTTPException(status_code=404, detail="Tech seminar entry not found")
+
+        return {
+            "message": "Tech seminar entry updated successfully",
+            "data": response.data[0]
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to update tech seminar: {str(e)}")
+
+
+@app.delete("/tech-seminars/{seminar_id}")
+async def delete_tech_seminar(
+    seminar_id: str,
+    _: str = Depends(verify_admin_token)
+):
+    """Delete a tech seminar entry by ID (관리자 인증 필요)"""
+    try:
+        if not SUPABASE_URL or not SUPABASE_SERVICE_ROLE_KEY:
+            raise HTTPException(status_code=500, detail="Supabase credentials not configured")
+
+        supabase: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
+        response = supabase.table("tech_seminar").delete().eq("id", seminar_id).execute()
+
+        if not response.data:
+            raise HTTPException(status_code=404, detail="Tech seminar entry not found")
+
+        return {
+            "message": "Tech seminar entry deleted successfully",
+            "data": response.data[0]
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to delete tech seminar: {str(e)}")
 
 
 # ===================================
