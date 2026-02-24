@@ -6,9 +6,9 @@
  * - 세미나명 + 링크 (선택적)
  */
 
-import { Mic, ExternalLink } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import type { TechSeminar } from '@/types'
+import { ExternalLink, Mic } from 'lucide-react'
 
 /**
  * 컨텐츠 컴포넌트 Props
@@ -53,7 +53,7 @@ export function TechSeminarsContent({
           <h2 className="text-2xl font-bold tracking-tight">Tech Seminars</h2>
         </div>
         <p className="text-muted-foreground ml-[52px] text-sm">
-          개발자로서의 기술 공유 활동
+          개발자로서의 조직 내 기술 공유 활동
         </p>
       </div>
 
