@@ -54,21 +54,25 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* 3. 교육사항 섹션 */}
+        {/* 3. 사이드프로젝트 섹션 */}
         <section
-          id="education"
+          id="projects"
           className="section-fullscreen opacity-0"
-          data-section="education"
+          data-section="projects"
         >
           <div className="container mx-auto max-w-7xl px-4 py-12 w-full overflow-y-auto max-h-screen">
-            <EducationSection />
+            <ProjectsSection />
           </div>
         </section>
 
-        {/* 4. 역량 섹션 */}
-        <section id="skills" className="section-fullscreen opacity-0" data-section="skills">
+        {/* 4. 기술공유 세미나 섹션 */}
+        <section
+          id="tech-seminars"
+          className="section-fullscreen opacity-0"
+          data-section="tech-seminars"
+        >
           <div className="container mx-auto max-w-7xl px-4 py-12 w-full overflow-y-auto max-h-screen">
-            <SkillsSection />
+            <TechSeminarsSection />
           </div>
         </section>
 
@@ -83,36 +87,21 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* 6. 사이드프로젝트 섹션 */}
-        <section
-          id="projects"
-          className="section-fullscreen opacity-0"
-          data-section="projects"
-        >
-          <div className="container mx-auto max-w-7xl px-4 py-12 w-full overflow-y-auto max-h-screen">
-            <ProjectsSection />
-          </div>
-        </section>
-
-        {/* 7. 수상 섹션 */}
+        {/* 6. 수상 섹션 */}
         <section id="awards" className="section-fullscreen opacity-0" data-section="awards">
           <div className="container mx-auto max-w-7xl px-4 py-12 w-full overflow-y-auto max-h-screen">
             <AwardsSection />
           </div>
         </section>
 
-        {/* 8. 인턴십 섹션 */}
-        <section
-          id="internships"
-          className="section-fullscreen opacity-0"
-          data-section="internships"
-        >
+        {/* 7. 역량 섹션 */}
+        <section id="skills" className="section-fullscreen opacity-0" data-section="skills">
           <div className="container mx-auto max-w-7xl px-4 py-12 w-full overflow-y-auto max-h-screen">
-            <InternshipsSection />
+            <SkillsSection />
           </div>
         </section>
 
-        {/* 9. 연구활동 섹션 */}
+        {/* 8. 연구활동 섹션 */}
         <section
           id="research"
           className="section-fullscreen opacity-0"
@@ -123,29 +112,29 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* 10. 기술공유 세미나 섹션 */}
+        {/* 9. 인턴십 섹션 */}
         <section
-          id="tech-seminars"
+          id="internships"
           className="section-fullscreen opacity-0"
-          data-section="tech-seminars"
+          data-section="internships"
         >
           <div className="container mx-auto max-w-7xl px-4 py-12 w-full overflow-y-auto max-h-screen">
-            <TechSeminarsSection />
+            <InternshipsSection />
           </div>
         </section>
 
-        {/* 11. 봉사활동 섹션 */}
+        {/* 10. 교육사항 섹션 */}
         <section
-          id="volunteer"
+          id="education"
           className="section-fullscreen opacity-0"
-          data-section="volunteer"
+          data-section="education"
         >
           <div className="container mx-auto max-w-7xl px-4 py-12 w-full overflow-y-auto max-h-screen">
-            <VolunteerSection />
+            <EducationSection />
           </div>
         </section>
 
-        {/* 12. 대외활동 섹션 */}
+        {/* 11. 대외활동 섹션 */}
         <section
           id="activities"
           className="section-fullscreen opacity-0"
@@ -153,6 +142,17 @@ export default function HomePage() {
         >
           <div className="container mx-auto max-w-7xl px-4 py-12 w-full overflow-y-auto max-h-screen">
             <ActivitiesSection />
+          </div>
+        </section>
+
+        {/* 12. 봉사활동 섹션 */}
+        <section
+          id="volunteer"
+          className="section-fullscreen opacity-0"
+          data-section="volunteer"
+        >
+          <div className="container mx-auto max-w-7xl px-4 py-12 w-full overflow-y-auto max-h-screen">
+            <VolunteerSection />
           </div>
         </section>
       </main>

@@ -19,16 +19,16 @@ import { cn } from '@/lib/utils'
 const sections = [
   { id: 'profile', label: 'Profile', icon: '◉' },
   { id: 'timeline', label: 'Timeline', icon: '◈' },
-  { id: 'education', label: 'Education', icon: '◈' },
-  { id: 'skills', label: 'Skills', icon: '◈' },
-  { id: 'peer-reviews', label: 'Peer Reviews', icon: '◈' },
   { id: 'projects', label: 'Projects', icon: '◈' },
-  { id: 'awards', label: 'Awards', icon: '◈' },
-  { id: 'internships', label: 'Internships', icon: '◈' },
-  { id: 'research', label: 'Research', icon: '◈' },
   { id: 'tech-seminars', label: 'Tech Seminars', icon: '◈' },
-  { id: 'volunteer', label: 'Volunteer', icon: '◈' },
+  { id: 'peer-reviews', label: 'Peer Reviews', icon: '◈' },
+  { id: 'awards', label: 'Awards', icon: '◈' },
+  { id: 'skills', label: 'Skills', icon: '◈' },
+  { id: 'research', label: 'Research', icon: '◈' },
+  { id: 'internships', label: 'Internships', icon: '◈' },
+  { id: 'education', label: 'Education', icon: '◈' },
   { id: 'activities', label: 'Activities', icon: '◈' },
+  { id: 'volunteer', label: 'Volunteer', icon: '◈' },
 ]
 
 export function SectionNavigationIndicator() {
